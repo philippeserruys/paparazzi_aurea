@@ -25,7 +25,7 @@ coord bleidenhoek lat0="51.09227" lon0="4.56318"
 
 #include "subsystems/navigation/nav_line.h"
 #include "subsystems/navigation/OSAMNav.h"
-#include "datalink.h"
+#include "subsystems/datalink/datalink.h"
 
 #define PHOTOGRAMMETRY_SWEEP_ANGLE 53		// Degrees from the North
 #define PHOTOGRAMMETRY_OVERLAP 50		// 1-99 Procent

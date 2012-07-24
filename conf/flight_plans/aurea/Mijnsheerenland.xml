@@ -4,7 +4,7 @@
   <header>
 #include "subsystems/navigation/nav_line.h"
 #include "subsystems/navigation/OSAMNav.h"
-#include "datalink.h"
+#include "subsystems/datalink/datalink.h"
 #define PHOTOGRAMMETRY_SWEEP_ANGLE 53		// Degrees from the North
 #define PHOTOGRAMMETRY_OVERLAP 50		// 1-99 Procent
 #define PHOTOGRAMMETRY_SIDELAP 50		// 1-99 Procent
