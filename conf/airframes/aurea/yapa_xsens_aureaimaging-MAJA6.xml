@@ -99,7 +99,7 @@
     <define name="POWER_CTL_BAT_NOMINAL" value="11.1" unit="volt"/>
     <!-- outer loop proportional gain -->
 
-   <define name="ALTITUDE_PGAIN" value="-0.10000000149" unit="(m/s)/m"/>
+   <define name="ALTITUDE_PGAIN" value="0.10000000149" unit="(m/s)/m"/>
    <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/>
 
 
@@ -113,7 +113,7 @@
     <!--<define name="AUTO_THROTTLE_PGAIN" value="-0.01"/>
     <define name="AUTO_THROTTLE_IGAIN" value="0.2"/>-->
 
-    <define name="AUTO_THROTTLE_PGAIN" value="-0.00300000002608"/>
+    <define name="AUTO_THROTTLE_PGAIN" value="0."/>
     <define name="AUTO_THROTTLE_IGAIN" value="0."/>
 
     <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.0630000010133" unit="rad/(m/s)"/>
@@ -122,23 +122,23 @@
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="COURSE_PGAIN" value="-0.80000000"/>
-    <define name="COURSE_DGAIN" value="0.40000000"/>
-    <define name="COURSE_PRE_BANK_CORRECTION" value="0.62400002956"/>
+    <define name="COURSE_PGAIN" value="0.80"/>
+    <define name="COURSE_DGAIN" value="0.40"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.628000020981"/>
 
     <define name="ROLL_MAX_SETPOINT" value="0.70" unit="radians"/>
     <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
     <define name="PITCH_MIN_SETPOINT" value="-0.5" unit="radians"/>
 
-    <define name="PITCH_PGAIN" value="-16231.7314453"/>
+    <define name="PITCH_PGAIN" value="16231.3427734"/>
     <define name="PITCH_DGAIN" value="1.5"/>
 
     <define name="ELEVATOR_OF_ROLL" value="1200."/>
 
     <!--<define name="ROLL_SLEW" value="0.1"/>  -->
 
-    <define name="ROLL_ATTITUDE_GAIN" value="-7500.4169922"/>
-    <define name="ROLL_RATE_GAIN" value="-300."/>
+    <define name="ROLL_ATTITUDE_GAIN" value="7500."/>
+    <define name="ROLL_RATE_GAIN" value="300."/>
   </section>
 
   <section name="AGGRESSIVE" prefix="AGR_">
@@ -184,9 +184,6 @@
   <modules>
     <load name="photogrammetry_calculator.xml"/>
 
-    <load name="ins_xsens_MTiG_fixedwing.xml">
-      <configure name="XSENS_UART_NR" value="0"/>
-    </load>
     <!--<load name="servo_switch.xml">
 	<define name="SERVO_SWITCH_ON_VALUE" value="1000"/>
 	<define name="SERVO_SWITCH_OFF_VALUE" value="2000"/>
