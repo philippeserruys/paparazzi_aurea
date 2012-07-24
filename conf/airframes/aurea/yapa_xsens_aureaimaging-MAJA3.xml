@@ -33,8 +33,8 @@
 
   <command_laws>
     <set servo="THROTTLE" value="@THROTTLE"/>
-    <set servo="AILERON_LEFT" value="@ROLL"/>
-    <set servo="AILERON_RIGHT" value="-@ROLL"/>
+    <set servo="AILERON_LEFT" value="-@ROLL"/>
+    <set servo="AILERON_RIGHT" value="@ROLL"/>
     <set servo="ELEVATOR" value="@PITCH"/>
     <set servo="RUDDER" value="-@YAW - @ROLL * 0.35"/>
   </command_laws>
