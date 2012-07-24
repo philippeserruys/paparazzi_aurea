@@ -1,0 +1,20 @@
+<!DOCTYPE airframe SYSTEM "../airframe.dtd">
+
+<!--
+
+  Paparazzi SD Logger Board
+
+-->
+
+<airframe name="Logger">
+
+  <firmware name="logger">
+    <target name="ap" board="sdlog_1.0" >
+      <configure name="LOG_MSG_FMT" value="LOG_PAPARAZZI"/>
+      <configure name="UART0_BAUD" value="B57600" />
+      <configure name="UART1_BAUD" value="B57600" />
+    </target>
+  </firmware>
+
+</airframe>
+
