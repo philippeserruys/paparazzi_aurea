@@ -1,0 +1,109 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<flight_plan alt="290" ground_alt="0" lat0="51.787180" lon0="4.448072" max_dist_from_home="1500" name="Basic" qfu="270" security_height="100">
+  <header>
+#include "subsystems/navigation/nav_line.h"
+#include "subsystems/navigation/OSAMNav.h"
+#include "datalink.h"
+#define PHOTOGRAMMETRY_SWEEP_ANGLE 53		// Degrees from the North
+#define PHOTOGRAMMETRY_OVERLAP 50		// 1-99 Procent
+#define PHOTOGRAMMETRY_SIDELAP 50		// 1-99 Procent
+#define PHOTOGRAMMETRY_RESOLUTION 80		// mm pixel projection size
+// Automatic include of camera trigger if camera is present and only take pictures inside polygon
+#include "generated/airframe.h"
+#ifdef DC_AUTOSHOOT_QUARTERSEC_PERIOD
+#include "modules/digital_cam/dc.h"
+#define LINE_START_FUNCTION dc_autoshoot = DC_AUTOSHOOT_PERIODIC;
+#define LINE_STOP_FUNCTION dc_autoshoot = DC_AUTOSHOOT_STOP;
+#endif
+</header>
+  <waypoints>
+    <waypoint name="HOME" x="-131.2" y="-85.3"/>
+    <waypoint name="STDBY" x="9.4" y="136.6"/>
+    <waypoint name="MOB" x="-1165.3" y="644.6"/>
+    <waypoint name="1" x="-158.0" y="-209.9"/>
+    <waypoint name="2" x="208.6" y="-114.8"/>
+    <waypoint name="3" x="200.6" y="222.6"/>
+    <waypoint name="4" x="-212.8" y="152.2"/>
+    <waypoint name="5" x="-164.2" y="76.7"/>
+    <waypoint name="6" x="-216.3" y="124.7"/>
+    <waypoint name="7" x="-327.8" y="287.6"/>
+    <waypoint name="8" x="-185.6" y="453.7"/>
+    <waypoint name="9" x="-44.0" y="296.7"/>
+    <waypoint name="S1" x="52.5" y="-329.4"/>
+    <waypoint name="S2" x="238.5" y="538.9"/>
+    <waypoint alt="33.0" name="AF" x="12.9" y="62.6"/>
+    <waypoint alt="-1.0" name="TD" x="-123.6" y="75.5"/>
+    <waypoint name="_BASELEG" x="1198.0" y="-214.5"/>
+    <waypoint name="CLIMB" x="-13.9" y="163.5"/>
+  </waypoints>
+  <sectors>
+    <sector name="PolySector1234">
+      <corner name="1"/>
+      <corner name="2"/>
+      <corner name="3"/>
+      <corner name="4"/>
+    </sector>
+    <sector name="PolySector5678">
+      <corner name="5"/>
+      <corner name="6"/>
+      <corner name="7"/>
+      <corner name="8"/>
+      <corner name="9"/>
+    </sector>
+  </sectors>
+  <exceptions/>
+  <blocks>
+    <block name="Wait GPS">
+      <set value="1" var="kill_throttle"/>
+      <while cond="!GpsFixValid()"/>
+    </block>
+    <block name="Holding point">
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+    <block group="home" key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
+      <exception cond="estimator_z > ground_alt+25" deroute="Standby"/>
+      <set value="0" var="kill_throttle"/>
+      <set value="0" var="estimator_flight_time"/>
+      <go wp="CLIMB"/>
+    </block>
+    <block group="home" key="<Control>a" name="Standby" strip_button="Standby" strip_icon="home.png">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block group="base_pattern" name="Oval 1-2" strip_button="Oval (wp 1-2)" strip_icon="oval.png">
+      <oval p1="S1" p2="S2" radius="nav_radius"/>
+    </block>
+    <block group="extra_pattern" name="Line 1-2" strip_button="Line (wp 1-2)" strip_icon="line.png">
+      <call fun="nav_line_init()"/>
+      <call fun="nav_line(WP_S1, WP_S2, nav_radius)"/>
+    </block>
+    <block group="survey" name="Survey S1-S2" strip_button="Survey (wp S1-S2)" strip_icon="survey.png">
+      <survey_rectangle grid="150" wp1="S1" wp2="S2"/>
+    </block>
+    <block group="land" name="Land Right AF-TD" strip_button="Land right (wp AF-TD)" strip_icon="land-right.png">
+      <set value="DEFAULT_CIRCLE_RADIUS" var="nav_radius"/>
+      <deroute block="land"/>
+    </block>
+    <block group="land" name="Land Left AF-TD" strip_button="Land left (wp AF-TD)" strip_icon="land-left.png">
+      <set value="-DEFAULT_CIRCLE_RADIUS" var="nav_radius"/>
+      <deroute block="land"/>
+    </block>
+    <block name="land">
+      <call fun="nav_compute_baseleg(WP_AF, WP_TD, WP__BASELEG, nav_radius)"/>
+      <circle radius="nav_radius" until="And(NavQdrCloseTo(DegOfRad(baseleg_out_qdr)-(nav_radius/fabs(nav_radius))*10), 10 > fabs(estimator_z - WaypointAlt(WP__BASELEG)))" wp="_BASELEG"/>
+    </block>
+    <block name="final">
+      <go approaching_time="0" from="AF" hmode="route" throttle="0.0" vmode="throttle" wp="TD"/>
+      <attitude roll="0.0" throttle="0.0" until="FALSE" vmode="throttle"/>
+    </block>
+    <block group="survey" name="Initialize Poly Survey 1234" strip_button="Survey1234" strip_icon="survey.png">
+      <call fun="InitializePolygonSurvey(WP_1, 4, 100, 80)"/>
+      <call fun="PolygonSurvey()"/>
+    </block>
+    <block group="survey" name="Initialize Poly Survey 56789" strip_button="Survey5678" strip_icon="survey.png">
+      <call fun="InitializePolygonSurvey(WP_5, 5, 100, 80)"/>
+      <call fun="PolygonSurvey()"/>
+    </block>
+  </blocks>
+</flight_plan>
