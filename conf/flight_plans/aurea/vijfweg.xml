@@ -1,0 +1,133 @@
+<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+
+<!--
+
+0) check you have the required SRTM file in ./data/srtm
+1) check alt = ground_alt + AGL(above ground level)
+2) set lat0 lon0 
+3) the polygon sweep angle (initializeploygonsurvey)
+4) open with flightplan editor and check every important waypoint: 
+
+ -->
+
+<flight_plan alt="100" ground_alt="0" lat0="51.09227" lon0="4.56318" max_dist_from_home="1500" name="Basic" security_height="50">
+  <header>
+<!--
+coord mater field lat0="50.83505" lon0="3.66249"  
+coord mille field lat0="50.79759" lon0="4.73389"
+coord reusel  lat0="51.31451" lon0="5.17141"
+coord d peters lat0="51.67349" lon0="5.76835"
+coord d 7ster  lat0="51.56120" lon0="5.77611"
+coord d loonen lat0="51.48602" lon0="5.95112"
+coord bierbeek lat0="50.82644" lon0="4.79383"
+coord bleidenhoek lat0="51.09227" lon0="4.56318"
+-->
+
+#include "subsystems/navigation/nav_line.h"
+#include "subsystems/navigation/OSAMNav.h"
+#include "datalink.h"
+
+#define PHOTOGRAMMETRY_SWEEP_ANGLE 53		// Degrees from the North
+#define PHOTOGRAMMETRY_OVERLAP 50		// 1-99 Procent
+#define PHOTOGRAMMETRY_SIDELAP 50		// 1-99 Procent
+#define PHOTOGRAMMETRY_RESOLUTION 80		// mm pixel projection size
+// Automatic include of camera trigger if camera is present and only take pictures inside polygon
+#include "generated/airframe.h"
+#ifdef DC_AUTOSHOOT_QUARTERSEC_PERIOD
+#include "modules/digital_cam/dc.h"
+#define LINE_START_FUNCTION dc_autoshoot = DC_AUTOSHOOT_PERIODIC;
+#define LINE_STOP_FUNCTION dc_autoshoot = DC_AUTOSHOOT_STOP;
+#endif
+</header>
+  <waypoints>
+    <waypoint name="HOME" x="0" y="0"/>
+    <waypoint alt="95.0" name="STDBY" x="31.1" y="-9.6"/>
+    <waypoint alt="95.0" name="1" x="68.7" y="20.7"/>
+    <waypoint alt="95.0" name="2" x="100.2" y="-5.1"/>
+    <waypoint name="MOB" x="137.0" y="-11.6"/>
+    <waypoint alt="95.0" name="S1" x="63.8" y="84.1"/>
+    <waypoint alt="95.0" name="_S2" x="127.6" y="-145.9"/>
+    <waypoint alt="95" name="_S3" x="100" y="100"/>
+    <waypoint alt="95" name="_S4" x="110" y="110"/>
+    <waypoint alt="95.0" name="S2" x="201.2" y="-148.9"/>
+    <waypoint alt="30.0" name="AF" x="177.4" y="45.1"/>
+    <waypoint alt="0.0" name="TD" x="85.3" y="7.0"/>
+    <waypoint name="_BASELEG" x="168.8" y="-13.8"/>
+    <waypoint alt="75.0" name="CLIMB" x="154.4" y="87.4"/>
+  </waypoints>
+  <exceptions/>
+  <blocks>
+    <block name="Wait GPS">
+      <set value="1" var="kill_throttle"/>
+      <while cond="!GpsFixValid()"/>
+    </block>
+    <block name="Geo init">
+      <while cond="LessThan(NavBlockTime(), 10)"/>
+      <call fun="NavSetGroundReferenceHere()"/>
+    </block>
+    <block name="Holding point">
+      <set value="1" var="kill_throttle"/>
+      <attitude roll="0" throttle="0" vmode="throttle"/>
+    </block>
+    <block group="home" key="t" name="Takeoff" strip_button="Takeoff (wp CLIMB)" strip_icon="takeoff.png">
+      <exception cond="estimator_z > ground_alt+25" deroute="Standby"/>
+      <set value="0" var="kill_throttle"/>
+      <set value="0" var="estimator_flight_time"/>
+      <go from="HOME" pitch="15" throttle="1.0" vmode="throttle" wp="CLIMB"/>
+    </block>
+    <block group="home" key="<Control>a" name="Standby" strip_button="Standby" strip_icon="home.png">
+      <circle radius="nav_radius" wp="STDBY"/>
+    </block>
+    <block group="base_pattern" key="F8" name="Figure 8 around wp 1" strip_button="Figure 8 (wp 1-2)" strip_icon="eight.png">
+      <eight center="1" radius="nav_radius" turn_around="2"/>
+    </block>
+    <block group="base_pattern" name="Oval 1-2" strip_button="Oval (wp 1-2)" strip_icon="oval.png">
+      <oval p1="S1" p2="S2" radius="nav_radius"/>
+    </block>
+    <block group="base_pattern" name="MOB" strip_button="Turn around here" strip_icon="mob.png">
+      <call fun="NavSetWaypointHere(WP_MOB)"/>
+      <set value="DEFAULT_CIRCLE_RADIUS" var="nav_radius"/>
+      <circle radius="nav_radius" wp="MOB"/>
+    </block>
+    <block group="extra_pattern" name="Line 1-2" strip_button="Line (wp 1-2)" strip_icon="line.png">
+      <call fun="nav_line_init()"/>
+      <call fun="nav_line(WP_S1, WP_S2, nav_radius)"/>
+    </block>
+    <block group="extra_pattern" name="Survey S1-S2" strip_button="Survey (wp S1-S2)" strip_icon="survey.png">
+      <survey_rectangle grid="150" wp1="S1" wp2="S2"/>
+    </block>
+    <block group="extra_pattern" name="Path 1,2,S1,S2,STDBY" strip_button="Path (1,2,S1,S2,STDBY)" strip_icon="path.png">
+      <path wpts="1,2 S1"/>
+      <path approaching_time="1" pitch="auto" throttle="0.4" wpts="S1, S2 STDBY"/>
+      <deroute block="Standby"/>
+    </block>
+    <block group="land" name="Land Right AF-TD" strip_button="Land right (wp AF-TD)" strip_icon="land-right.png">
+      <set value="DEFAULT_CIRCLE_RADIUS" var="nav_radius"/>
+      <deroute block="land"/>
+    </block>
+    <block group="land" name="Land Left AF-TD" strip_button="Land left (wp AF-TD)" strip_icon="land-left.png">
+      <set value="-DEFAULT_CIRCLE_RADIUS" var="nav_radius"/>
+      <deroute block="land"/>
+    </block>
+    <block name="land">
+      <call fun="nav_compute_baseleg(WP_AF, WP_TD, WP__BASELEG, nav_radius)"/>
+      <circle radius="nav_radius" until="And(NavQdrCloseTo(DegOfRad(baseleg_out_qdr)-(nav_radius/fabs(nav_radius))*10), 10 > fabs(estimator_z - WaypointAlt(WP__BASELEG)))" wp="_BASELEG"/>
+    </block>
+    <block name="final">
+      <go approaching_time="0" from="AF" hmode="route" throttle="0.0" vmode="throttle" wp="TD"/>
+      <attitude roll="0.0" throttle="0.0" until="FALSE" vmode="throttle"/>
+    </block>
+    <block group="Aureaimaging" name="Open hatch" strip_button="Open hatch">
+      <call fun="OpenSlidingHatch()"/>
+      <deroute block="Standby"/>
+    </block>
+    <block group="Aureaimaging" name="Close hatch" strip_button="Close hatch">
+      <call fun="CloseSlidingHatch()"/>
+      <deroute block="Standby"/>
+    </block>
+    <block name="Poly Survey" strip_button="Survey" strip_icon="survey.png">
+      <call fun="InitializePolygonSurvey(WP_S1, 4, 100, 75)"/>
+      <call fun="PolygonSurvey()"/>
+    </block>
+  </blocks>
+</flight_plan>
