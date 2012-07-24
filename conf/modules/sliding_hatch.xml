@@ -1,0 +1,14 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="sliding_hatch">
+  <header>
+    <file name="sliding_hatch.h"/>
+  </header>
+  <init fun="init_sliding_hatch()"/>
+  <periodic fun="periodic_1Hz_sliding_hatch()" freq="1." />
+
+  <makefile target="ap|sim|jsbsim">
+    <file name="sliding_hatch.c"/>
+  </makefile>
+</module>
+

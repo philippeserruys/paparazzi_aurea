@@ -1,0 +1,16 @@
+ls
+cd ./aureapaparazzi
+pwd (print working directory)
+
+download: git pull
+git status  (quel fichier a changé)
+git add  (pour ajouter les nouveaux fichiers)
+git diff    (ce qui a changé dans le fichier)
+
+upload: 
+git commit  (backup des modifications)
+git commit -a -m "linux comments"   (" on qwerty is MAJ% )
+git push   (password is thi******)
+
+
+copy paste in terminal: shift+ctrl+c  shift+ctrl+v

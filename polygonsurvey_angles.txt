@@ -1,0 +1,21 @@
+
+
+
+ <block group="survey" name="Initialize Poly Survey 1234" strip_button="Survey1234" strip_icon="survey.png">
+      <call fun="InitializePolygonSurvey(WP_1, 4, 100, 45)"/>
+      <call fun="PolygonSurvey()"/>
+    </block>
+
+
+
+
+last value in "InitializePolygonSurvey(WP_1, 4, 100, 45)" is the angle
+
+1 o clock = 66
+1h30      = 45
+2 o clock = 33
+3 o clock = 0
+4 o clock = -33
+5 o clock = -66 = 11 o clock
+
+

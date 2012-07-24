@@ -1,0 +1,238 @@
+<!DOCTYPE airframe SYSTEM "../airframe.dtd">
+
+<!-- 
+	YAPA + XSens + XBee
+-->
+
+<airframe name="Yapa v1">
+
+  <servos>
+    <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
+    <servo name="AILERON_LEFT" no="2" min="880" neutral="1380" max="1880"/>
+    <servo name="AILERON_RIGHT" no="6" min="2100" neutral="1600" max="1100"/>
+    <servo name="ELEVATOR" no="3" min="1000" neutral="1500" max="2300"/>
+    <servo name="RUDDER" no="4" min="1000" neutral="1500" max="2000"/>
+    <servo name="HATCH" no="7" min="1000" neutral="2000" max="2000"/>
+    <servo name="PWRSWITCH" no="5" min="1000" neutral="2000" max="2000"/>
+  </servos>
+
+  <commands>
+    <axis name="THROTTLE" failsafe_value="0"/>
+    <axis name="ROLL" failsafe_value="0"/>
+    <axis name="PITCH" failsafe_value="0"/>
+    <axis name="YAW" failsafe_value="0"/>
+  </commands>
+
+  <rc_commands>
+    <set command="THROTTLE" value="@THROTTLE"/>
+    <set command="ROLL" value="@ROLL"/>
+    <set command="PITCH" value="@PITCH"/>
+    <set command="YAW" value="@YAW"/>
+  </rc_commands>
+
+
+  <command_laws>
+    <set servo="THROTTLE" value="@THROTTLE"/>
+    <set servo="AILERON_LEFT" value="@ROLL"/>
+    <set servo="AILERON_RIGHT" value="-@ROLL"/>
+    <set servo="ELEVATOR" value="@PITCH"/>
+    <set servo="RUDDER" value="-@YAW - @ROLL * 0.35"/>
+  </command_laws>
+
+
+
+
+  <section name="SERVO_MIXER_GAINS">
+    <define name="AILERON_RATE_UP" value="0.50f"/>
+    <define name="AILERON_RATE_DOWN" value="0.25f"/>
+
+    <define name="AILERON_RATE_UP_BRAKE" value="0.5f"/>
+    <define name="AILERON_RATE_DOWN_BRAKE" value="0.9f"/>
+
+    <define name="PITCH_GAIN" value="-0.9f"/>
+
+    <define name="YAW_THRUST" value="0.0f"/>
+    <define name="BRAKE_AILEVON" value="-0.68f"/>
+    <define name="BRAKE_PITCH" value="0.0f"/>
+    <define name="MAX_BRAKE_RATE" value="150"/>
+
+    <define name="RATELIMIT(X,RATE)" value="( _rate_limited_value + Chop( (X) - _rate_limited_value, -(RATE), (RATE)  )); \
+       int16_t _rate_limited_value = 0;"/>
+
+  </section>
+
+
+  <section name="AUTO1" prefix="AUTO1_">
+    <define name="MAX_ROLL" value="RadOfDeg(55)"/>
+    <define name="MAX_PITCH" value="RadOfDeg(35)"/>
+  </section>
+
+  <section name="BAT">
+    <define name="MilliAmpereOfAdc(adc)" value="((adc) - 505) * 124.0f"/>
+
+    <define name="LOW_BAT_LEVEL" value="10.0" unit="V"/>
+    <define name="CRITIC_BAT_LEVEL" value="9.5" unit="V"/>
+    <define name="CATASTROPHIC_BAT_LEVEL" value="9.0" unit="V"/>
+  </section>
+
+  <section name="INS" prefix="INS_">
+    <define name="ROLL_NEUTRAL_DEFAULT" value="0.300000011921" unit="rad"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="0.600000023842" unit="rad"/>
+  </section>
+
+  <section name="MISC">
+    <define name="NOMINAL_AIRSPEED" value="13." unit="m/s"/>
+    <define name="CARROT" value="6." unit="s"/>
+    <define name="CONTROL_RATE" value="60" unit="Hz"/>
+    <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
+<!--    <define name="NO_XBEE_API_INIT" value="TRUE"/> -->
+    <define name="ALT_KALMAN_ENABLED" value="TRUE"/>
+
+    <define name="DEFAULT_CIRCLE_RADIUS" value="120."/>
+
+    <define name="GLIDE_AIRSPEED" value="10"/>
+    <define name="GLIDE_VSPEED" value="3."/>
+    <define name="GLIDE_PITCH" value="20" unit="deg"/>
+  </section>
+
+  <section name="VERTICAL CONTROL" prefix="V_CTL_">
+    <define name="POWER_CTL_BAT_NOMINAL" value="11.1" unit="volt"/>
+    <!-- outer loop proportional gain -->
+
+   <define name="ALTITUDE_PGAIN" value="-0.10000000149" unit="(m/s)/m"/>
+   <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/>
+
+
+    <!-- auto throttle inner loop -->
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.57800000906" unit="%"/>
+    <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25" unit="%"/>
+    <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85" unit="%"/>
+    <define name="AUTO_THROTTLE_LOITER_TRIM" value="1000" unit="pprz_t"/>
+    <define name="AUTO_THROTTLE_DASH_TRIM" value="-2500" unit="pprz_t"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15000000596" unit="%/(m/s)"/>
+    <!--<define name="AUTO_THROTTLE_PGAIN" value="-0.01"/>
+    <define name="AUTO_THROTTLE_IGAIN" value="0.2"/>-->
+
+    <define name="AUTO_THROTTLE_PGAIN" value="0."/>
+    <define name="AUTO_THROTTLE_IGAIN" value="0."/>
+
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.10000000149" unit="rad/(m/s)"/>
+
+    <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
+  </section>
+
+  <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
+    <define name="COURSE_PGAIN" value="-0.90600001812"/>
+    <define name="COURSE_DGAIN" value="0.305000007153"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.628000020981"/>
+
+    <define name="ROLL_MAX_SETPOINT" value="0.75" unit="radians"/>
+    <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
+    <define name="PITCH_MIN_SETPOINT" value="-0.5" unit="radians"/>
+
+    <define name="PITCH_PGAIN" value="-16231.3427734"/>
+    <define name="PITCH_DGAIN" value="1.5"/>
+
+    <define name="ELEVATOR_OF_ROLL" value="1200."/>
+
+    <define name="ROLL_SLEW" value="0.1"/>
+
+    <define name="ROLL_ATTITUDE_GAIN" value="-7500."/>
+    <define name="ROLL_RATE_GAIN" value="-300."/>
+  </section>
+
+  <section name="AGGRESSIVE" prefix="AGR_">
+    <define name="BLEND_START" value="20"/><!-- Altitude Error to Initiate Aggressive Climb CANNOT BE ZERO!!-->
+    <define name="BLEND_END" value="10"/><!-- Altitude Error to Blend Aggressive to Regular Climb Modes  CANNOT BE ZERO!!-->
+    <define name="CLIMB_THROTTLE" value="1."/><!-- Gaz for Aggressive Climb -->
+    <define name="CLIMB_PITCH" value="0.300000011921"/><!-- Pitch for Aggressive Climb -->
+    <define name="DESCENT_THROTTLE" value="0.10000000149"/><!-- Gaz for Aggressive Decent -->
+    <define name="DESCENT_PITCH" value="-0.25"/><!-- Pitch for Aggressive Decent -->
+    <define name="CLIMB_NAV_RATIO" value="0.800000011921"/><!-- Percent Navigation for Altitude Error Equal to Start Altitude -->
+    <define name="DESCENT_NAV_RATIO" value="1."/>
+  </section>
+
+  <section name="FAILSAFE" prefix="FAILSAFE_">
+    <define name="DEFAULT_THROTTLE" value="0.35" unit="%"/>
+    <define name="DEFAULT_ROLL" value="0.17" unit="rad"/>
+    <define name="DEFAULT_PITCH" value="0.08" unit="rad"/>
+
+    <define name="HOME_RADIUS" value="DEFAULT_CIRCLE_RADIUS" unit="m"/>
+    <define name="KILL_MODE_DISTANCE" value="(MAX_DIST_FROM_HOME*1.5)"/>
+    <define name="DELAY_WITHOUT_GPS" value="3" unit="s"/>
+  </section>
+
+  <section name="Photogrammetry" prefix="PHOTOGRAMMETRY_">
+    <!-- Camera Parameters -->
+    <define name="FOCAL_LENGTH" value="8.3" unit="mm"/>
+    <define name="SENSOR_WIDTH" value="6.66" unit="mm"/>		<!-- In direction of the plane's wings -->
+    <define name="SENSOR_HEIGHT" value="5.32" unit="mm"/>		<!-- In direction of the plane's nose -->
+    <define name="PIXELS_WIDTH" value="1280" unit=""/>
+
+    <!-- Photogrammetry Parameters : defined per flightplan
+    <define name="OVERLAP" value="0.5" unit="PROCENT"/>
+    <define name="SIDELAP" value="0.5" unit="PROCENT"/>
+    <define name="RESOLUTION" value="50" unit="mm pixel projection"/>
+-->
+    <!-- Flight Safety Parameters -->
+    <define name="HEIGHT_MIN" value="40" unit="m"/>
+    <define name="HEIGHT_MAX" value="500" unit="m"/>
+    <define name="RADIUS_MIN" value="70" unit="m"/>
+  </section>
+
+
+  <modules>
+    <load name="photogrammetry_calculator.xml"/>
+
+    <load name="ins_xsens_MTiG_fixedwing.xml">
+      <configure name="XSENS_UART_NR" value="0"/>
+    </load>
+    <!--<load name="servo_switch.xml">
+	<define name="SERVO_SWITCH_ON_VALUE" value="1000"/>
+	<define name="SERVO_SWITCH_OFF_VALUE" value="2000"/>
+	<define name="SERVO_SWITCH_SERVO" value="SERVO_HATCH"/>
+    </load>-->
+
+    <load name="sliding_hatch.xml">
+	<define name="SLIDING_HATCH_ON_VALUE" value="1000"/>
+	<define name="SLIDING_HATCH_OFF_VALUE" value="2000"/>
+	<define name="SLIDING_HATCH_SERVO" value="SERVO_HATCH"/>
+    </load>
+
+    <load name="digital_cam.xml">
+      <define name="DC_SHUTTER_LED" value="5"/>
+	<define name="DC_AUTOSHOOT_QUARTERSEC_PERIOD" value="7."/>
+	<define name="DC_AUTOSHOOT_METER_GRID" value="30."/>
+    </load>
+  </modules>
+
+  <firmware name="fixedwing">
+
+    <target name="ap" board="tiny_2.11"/>
+    <target name="sim" board="pc"/>
+
+      <define name="STRONG_WIND"/>
+      <define name="WIND_INFO"/>
+      <define name="WIND_INFO_RET"/>
+      <define name="LOITER_TRIM"/>
+      <define name="XSENS_BACKWARDS"/>
+      <define name="ALT_KALMAN"/>
+      <define name="AGR_CLIMB"/>
+      <define name="TUNE_AGRESSIVE_CLIMB"/>
+
+    <subsystem name="radio_control" type="ppm"/>
+
+    <!-- Communication -->
+    <subsystem name="telemetry" type="transparent">
+      <configure name="MODEM_BAUD" value="B57600"/>
+    </subsystem>
+
+    <!-- Actuators -->
+    <subsystem name="control"/>
+    <!-- Sensors -->
+    <subsystem name="navigation" type="extra"/>
+    <subsystem name="gps" type="xsens"/>
+
+  </firmware>
+
+</airframe>
