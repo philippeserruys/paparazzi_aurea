@@ -76,8 +76,8 @@
   </section>
 
   <section name="INS" prefix="INS_">
-    <define name="ROLL_NEUTRAL_DEFAULT" value="-0.0869999974966" unit="rad"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="-0.082999996841" unit="rad"/>
+    <define name="ROLL_NEUTRAL_DEFAULT" value="-0.0769999995828" unit="rad"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="0.0130000002682" unit="rad"/>
   </section>
 
   <section name="MISC">
