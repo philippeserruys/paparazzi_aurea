@@ -16,9 +16,9 @@
     </program>
     <program name="GCS" command="sw/ground_segment/cockpit/gcs">
       <arg flag="-b" variable="ivy_bus"/>
-        <arg flag="-layout" constant="aurea.xml"/>
-        <arg flag="-speech" />
-        <arg flag="-srtm" />
+      <arg flag="-layout" constant="aurea.xml"/>
+      <arg flag="-speech"/>
+      <arg flag="-srtm"/>
     </program>
     <program name="Flight Plan Editor" command="sw/ground_segment/cockpit/gcs -edit"/>
     <program name="Messages" command="sw/ground_segment/tmtc/messages">
@@ -52,16 +52,30 @@
     </program>
   </section>
   <section name="sessions">
-    <session name="Flight USB-serial@57600">
+    <session name="Flight USB-XBEE@57600">
       <program name="Data Link">
+        <arg flag="-transport" constant="xbee"/>
         <arg flag="-d" constant="/dev/ttyUSB0"/>
         <arg flag="-s" constant="57600"/>
       </program>
       <program name="Server"/>
       <program name="GCS">
         <arg flag="-layout" constant="aurea.xml"/>
-        <arg flag="-speech" />
-        <arg flag="-srtm" />
+        <arg flag="-speech"/>
+        <arg flag="-srtm"/>
+      </program>
+      <program name="Messages"/>
+    </session>
+    <session name="Plot Desired">
+      <program name="Real-time Plotter">
+        <arg flag="-t" constant="PITCH"/>
+        <arg flag="-c" constant="'*:telemetry:DESIRED:pitch'"/>
+        <arg flag="-c" constant="'*:telemetry:ATTITUDE:theta'"/>
+      </program>
+      <program name="Real-time Plotter">
+        <arg flag="-t" constant="ROLL"/>
+        <arg flag="-c" constant="'*:telemetry:DESIRED:roll'"/>
+        <arg flag="-c" constant="'*:telemetry:ATTITUDE:phi'"/>
       </program>
     </session>
   </section>

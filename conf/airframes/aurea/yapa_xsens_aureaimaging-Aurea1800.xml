@@ -8,8 +8,8 @@
 
   <servos>
     <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
-    <servo name="AILERON_RIGHT" no="2" min="1320" neutral="1620" max="2220"/> <!-- 1620 -->
-    <servo name="AILERON_LEFT" no="6" min="1790" neutral="1490" max="890"/>   <!-- 1490 -->
+    <servo name="AILERON_RIGHT" no="6" min="1320" neutral="1620" max="2220"/> <!-- 1620 -->
+    <servo name="AILERON_LEFT" no="2" min="1790" neutral="1490" max="890"/>   <!-- 1490 -->
     <servo name="ELEVATOR" no="7" min="1300" neutral="1600" max="1900"/>   <!-- 1610 -->
     <servo name="RUDDER" no="3" min="1260" neutral="1630" max="2000"/>
     <servo name="HATCH" no="1" min="1000" neutral="2000" max="2000"/>
@@ -77,7 +77,7 @@
 
   <section name="INS" prefix="INS_">
     <define name="ROLL_NEUTRAL_DEFAULT" value="0" unit="rad"/>
-    <define name="PITCH_NEUTRAL_DEFAULT" value="0" unit="rad"/>
+    <define name="PITCH_NEUTRAL_DEFAULT" value="5" unit="deg"/>
   </section>
 
   <section name="MISC">
@@ -104,7 +104,7 @@
 
 
     <!-- auto throttle inner loop -->
-    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.60" unit="%"/>
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.50" unit="%"/>
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25" unit="%"/>
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85" unit="%"/>
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="1000" unit="pprz_t"/>
@@ -130,10 +130,10 @@
     <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
     <define name="PITCH_MIN_SETPOINT" value="-0.5" unit="radians"/>
 
-    <define name="PITCH_PGAIN" value="16231.3427734"/>
+    <define name="PITCH_PGAIN" value="12000.3427734"/>
     <define name="PITCH_DGAIN" value="1.5"/>
 
-    <define name="ELEVATOR_OF_ROLL" value="1200."/>
+    <define name="ELEVATOR_OF_ROLL" value="1000."/>
 
     <define name="ROLL_SLEW" value="0.1"/>
 
@@ -220,7 +220,7 @@
     <subsystem name="radio_control" type="ppm"/>
 
     <!-- Communication -->
-    <subsystem name="telemetry" type="transparent">
+    <subsystem name="telemetry" type="xbee_api">
       <configure name="MODEM_BAUD" value="B57600"/>
     </subsystem>
 
