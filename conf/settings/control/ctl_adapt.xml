@@ -1,0 +1,16 @@
+<!DOCTYPE settings SYSTEM "../settings.dtd">
+
+<!-- A conf to use to tune a new A/C -->
+
+<settings>
+  <dl_settings>
+    <dl_settings NAME="control">
+
+      <dl_settings NAME="attitude">
+        <dl_setting MAX="0.2" MIN="0" STEP="0.00" VAR="h_ctl_pitch_attitude_igain" shortname="pitch_igain" param="H_CTL_PITCH_ATTITUDE_IGAIN" module="stabilization/stabilization_attitude" />
+        <dl_setting MAX="0.2" MIN="0" STEP="0.001" VAR="h_ctl_roll_attitude_igain" shortname="roll_igain" param="H_CTL_ROLL_ATTITUDE_IGAIN"/>
+      </dl_settings>
+
+    </dl_settings>
+  </dl_settings>
+</settings>

@@ -16,7 +16,7 @@
    radio="radios/R617FS_5ch_neg.xml"
    telemetry="telemetry/default_fixedwing_imu.xml"
    flight_plan="flight_plans/aurea/heemskerk.xml"
-   settings=" settings/dc_aurea.xml settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/control/tune_agr_climb.xml settings/estimation/ins_neutrals.xml settings/modules/photogrammetry_calculator.xml"
+   settings=" settings/dc_aurea.xml settings/fixedwing_basic.xml settings/control/ctl_basic.xml settings/control/tune_agr_climb.xml settings/estimation/ins_neutrals.xml settings/modules/photogrammetry_calculator.xml settings/control/ctl_adapt.xml"
    gui_color="blue"
   />
   <aircraft

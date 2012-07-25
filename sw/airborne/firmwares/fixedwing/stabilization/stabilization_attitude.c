@@ -67,6 +67,10 @@ float  h_ctl_pitch_pgain;
 float  h_ctl_pitch_dgain;
 pprz_t h_ctl_elevator_setpoint;
 
+float h_ctl_pitch_attitude_igain;
+float h_ctl_roll_attitude_igain;
+
+
 #ifdef USE_AOA
   uint8_t h_ctl_pitch_mode;
 #endif
@@ -166,6 +170,11 @@ void h_ctl_init( void ) {
 #ifdef H_CTL_ROLL_ATTITUDE_GAIN
   h_ctl_roll_attitude_gain = H_CTL_ROLL_ATTITUDE_GAIN;
   h_ctl_roll_rate_gain = H_CTL_ROLL_RATE_GAIN;
+#endif
+
+#ifdef H_CTL_ROLL_IGAIN
+  h_ctl_pitch_attitude_igain = H_CTL_PITCH_ATTITUDE_IGAIN;
+  h_ctl_roll_attitide_igain = H_CTL_ROLL_ATTITUDE_IGAIN;
 #endif
 
 #ifdef AGR_CLIMB

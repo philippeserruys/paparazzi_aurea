@@ -99,5 +99,7 @@ extern void h_ctl_attitude_loop ( void );
 
 extern float h_ctl_roll_attitude_gain;
 extern float h_ctl_roll_rate_gain;
+extern float h_ctl_pitch_attitude_igain;
+extern float h_ctl_roll_attitude_igain;
 
 #endif /* FW_H_CTL_H */
