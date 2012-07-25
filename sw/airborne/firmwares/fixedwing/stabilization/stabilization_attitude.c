@@ -325,15 +325,24 @@ void h_ctl_attitude_loop ( void ) {
 
 #ifdef H_CTL_ROLL_ATTITUDE_GAIN
 inline static void h_ctl_roll_loop( void ) {
+  static float roll_integrator = 0.0f;
   float err = estimator_phi - h_ctl_roll_setpoint;
 #ifdef SITL
   static float last_err = 0;
   estimator_p = (err - last_err)/(1/60.);
   last_err = err;
 #endif
+ 
+  if (launch)
+    roll_integrator += h_ctl_roll_attitude_gain * err * h_ctl_roll_attitude_igain;
+  else
+    roll_integrator = 0.0f;
+  BoundAbs(roll_integrator, 0.1f);
+
   float cmd = h_ctl_roll_attitude_gain * err
     + h_ctl_roll_rate_gain * estimator_p
-    + v_ctl_throttle_setpoint * h_ctl_aileron_of_throttle;
+    + v_ctl_throttle_setpoint * h_ctl_aileron_of_throttle
+    + roll_integrator;
 
   h_ctl_aileron_setpoint = TRIM_PPRZ(cmd);
 }
@@ -428,6 +437,7 @@ inline static float loiter(void) {
 
 inline static void h_ctl_pitch_loop( void ) {
   static float last_err;
+  static float pitch_integrator = 0.0f;
   /* sanity check */
   if (h_ctl_elevator_of_roll <0.)
     h_ctl_elevator_of_roll = 0.;
@@ -453,9 +463,16 @@ inline static void h_ctl_pitch_loop( void ) {
 #endif
 
 
+  if (launch)
+    pitch_integrator += -h_ctl_pitch_pgain * err * h_ctl_pitch_attitude_igain;
+  else
+    pitch_integrator = 0.0f;
+  BoundAbs(pitch_integrator, 0.1f);
+
+
   float d_err = err - last_err;
   last_err = err;
-  float cmd = -h_ctl_pitch_pgain * (err + h_ctl_pitch_dgain * d_err);
+  float cmd = -h_ctl_pitch_pgain * (err + h_ctl_pitch_dgain * d_err) + pitch_integrator;
 #ifdef LOITER_TRIM
   cmd += loiter();
 #endif
