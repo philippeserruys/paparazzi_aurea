@@ -10,7 +10,7 @@
 
   <firmware name="logger">
     <target name="ap" board="sdlog_1.0" >
-      <configure name="LOG_MSG_FMT" value="LOG_PPRZ"/>
+      <configure name="LOG_MSG_FMT" value="LOG_XBEE"/>
       <configure name="UART0_BAUD" value="B57600" />
       <configure name="UART1_BAUD" value="B57600" />
     </target>
