@@ -67,8 +67,8 @@ float  h_ctl_pitch_pgain;
 float  h_ctl_pitch_dgain;
 pprz_t h_ctl_elevator_setpoint;
 
-float h_ctl_pitch_attitude_igain;
-float h_ctl_roll_attitude_igain;
+float h_ctl_pitch_attitude_igain = 0.0f;
+float h_ctl_roll_attitude_igain = 0.0f;
 
 
 #ifdef USE_AOA

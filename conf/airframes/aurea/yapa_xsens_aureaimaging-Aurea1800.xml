@@ -7,7 +7,7 @@
 <airframe name="Yapa v1">
 
   <servos>
-    <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
+    <servo name="THROTTLE" no="0" min="1250" neutral="1250" max="1850"/>
     <servo name="AILERON_RIGHT" no="6" min="1320" neutral="1620" max="2220"/> <!-- 1620 -->
     <servo name="AILERON_LEFT" no="2" min="1790" neutral="1490" max="890"/>   <!-- 1490 -->
     <servo name="ELEVATOR" no="7" min="1300" neutral="1600" max="1900"/>   <!-- 1610 -->
@@ -21,7 +21,12 @@
     <axis name="ROLL" failsafe_value="0"/>
     <axis name="PITCH" failsafe_value="0"/>
     <axis name="YAW" failsafe_value="0"/>
+    <axis name="FLAPS" failsafe_value="0"/>
   </commands>
+
+  <auto_rc_commands>
+    <set command="FLAPS" value="@EXTRA1"/>
+  </auto_rc_commands>
 
   <rc_commands>
     <set command="THROTTLE" value="@THROTTLE"/>
@@ -33,8 +38,8 @@
 
   <command_laws>
     <set servo="THROTTLE" value="@THROTTLE"/>
-    <set servo="AILERON_RIGHT" value="@ROLL"/>
-    <set servo="AILERON_LEFT" value="-@ROLL"/>
+    <set servo="AILERON_RIGHT" value="@ROLL-@FLAPS*0.75f"/>
+    <set servo="AILERON_LEFT" value="-@ROLL-@FLAPS*0.75f"/>
     <set servo="ELEVATOR" value="@PITCH"/>
     <set servo="RUDDER" value="-@YAW - @ROLL * 0.035"/>
   </command_laws>
@@ -184,11 +189,11 @@
   <modules>
     <load name="photogrammetry_calculator.xml"/>
 
-    <!--<load name="servo_switch.xml">
-	<define name="SERVO_SWITCH_ON_VALUE" value="1000"/>
-	<define name="SERVO_SWITCH_OFF_VALUE" value="2000"/>
-	<define name="SERVO_SWITCH_SERVO" value="SERVO_HATCH"/>
-    </load>-->
+    <load name="airspeed_ets.xml">
+	<define name="AIRSPEED_ETS_I2C_DEV" value="i2c0"/>
+	<define name="USE_I2C0"/>
+	<define name="SENSOR_SYNC_SEND" />
+    </load>
 
     <load name="sliding_hatch.xml">
 	<define name="SLIDING_HATCH_ON_VALUE" value="1000"/>
