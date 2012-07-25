@@ -140,8 +140,8 @@
     <define name="ROLL_ATTITUDE_GAIN" value="7500."/>
     <define name="ROLL_RATE_GAIN" value="300."/>
 
-    <define name="ROLL_ATTITUDE_IGAIN" value="0.0"/>
-    <define name="PITCH_ATTITUDE_IGAIN" value="0.0"/>
+    <define name="ROLL_ATTITUDE_IGAIN" value="0.015"/>
+    <define name="PITCH_ATTITUDE_IGAIN" value="0.015"/>
   </section>
 
   <section name="AGGRESSIVE" prefix="AGR_">
