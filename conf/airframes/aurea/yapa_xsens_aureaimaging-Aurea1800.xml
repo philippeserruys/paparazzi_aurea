@@ -33,6 +33,7 @@
     <set command="ROLL" value="@ROLL"/>
     <set command="PITCH" value="@PITCH"/>
     <set command="YAW" value="@YAW"/>
+    <set command="FLAPS" value="@EXTRA1"/>
   </rc_commands>
 
 
@@ -109,7 +110,7 @@
 
 
     <!-- auto throttle inner loop -->
-    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.50" unit="%"/>
+    <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.486000001431" unit="%"/>
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25" unit="%"/>
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85" unit="%"/>
     <define name="AUTO_THROTTLE_LOITER_TRIM" value="1000" unit="pprz_t"/>
@@ -127,20 +128,20 @@
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="COURSE_PGAIN" value="0.80"/>
-    <define name="COURSE_DGAIN" value="0.40"/>
-    <define name="COURSE_PRE_BANK_CORRECTION" value="0.628000020981"/>
+    <define name="COURSE_PGAIN" value="0.797999978065"/>
+    <define name="COURSE_DGAIN" value="0.358000010252"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.985000014305"/>
 
-    <define name="ROLL_MAX_SETPOINT" value="0.75" unit="radians"/>
+    <define name="ROLL_MAX_SETPOINT" value="0.651000022888" unit="radians"/>
     <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
     <define name="PITCH_MIN_SETPOINT" value="-0.5" unit="radians"/>
 
-    <define name="PITCH_PGAIN" value="12000.3427734"/>
+    <define name="PITCH_PGAIN" value="14000."/>
     <define name="PITCH_DGAIN" value="1.5"/>
 
     <define name="ELEVATOR_OF_ROLL" value="1000."/>
 
-    <define name="ROLL_SLEW" value="0.1"/>
+    <!-- <define name="ROLL_SLEW" value="0.1"/> -->
 
     <define name="ROLL_ATTITUDE_GAIN" value="7500."/>
     <define name="ROLL_RATE_GAIN" value="300."/>
@@ -192,7 +193,7 @@
     <load name="airspeed_ets.xml">
 	<define name="AIRSPEED_ETS_I2C_DEV" value="i2c0"/>
 	<define name="USE_I2C0"/>
-	<define name="SENSOR_SYNC_SEND" />
+	<define name="SENSOR_SYNC_SEND"/>
     </load>
 
     <load name="sliding_hatch.xml">
