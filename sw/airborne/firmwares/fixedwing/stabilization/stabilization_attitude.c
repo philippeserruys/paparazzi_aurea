@@ -337,7 +337,7 @@ inline static void h_ctl_roll_loop( void ) {
     roll_integrator += h_ctl_roll_attitude_gain * err * h_ctl_roll_attitude_igain;
   else
     roll_integrator = 0.0f;
-  BoundAbs(roll_integrator, 0.1f);
+  BoundAbs(roll_integrator, 0.15f*MAX_PPRZ);
 
   float cmd = h_ctl_roll_attitude_gain * err
     + h_ctl_roll_rate_gain * estimator_p
@@ -467,7 +467,7 @@ inline static void h_ctl_pitch_loop( void ) {
     pitch_integrator += -h_ctl_pitch_pgain * err * h_ctl_pitch_attitude_igain;
   else
     pitch_integrator = 0.0f;
-  BoundAbs(pitch_integrator, 0.1f);
+  BoundAbs(pitch_integrator, 0.1f*MAX_PPRZ);
 
 
   float d_err = err - last_err;
