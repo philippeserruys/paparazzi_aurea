@@ -19,7 +19,7 @@
 </header>
   <waypoints>
     <waypoint name="HOME" x="6.9" y="-6.3"/>
-    <waypoint name="STDBY" x="57.8" y="-55.3"/>
+    <waypoint name="STDBY" x="-441.0" y="791.3"/>
     <waypoint name="MOB" x="-1165.3" y="644.6"/>
     <waypoint name="1" x="-523.0" y="979.6"/>
     <waypoint name="2" x="-734.1" y="630.6"/>
@@ -30,12 +30,12 @@
     <waypoint name="7" x="-222.3" y="-270.6"/>
     <waypoint name="8" x="-325.1" y="-167.7"/>
     <waypoint name="9" x="-128.8" y="290.3"/>
-    <waypoint name="S1" x="-88.9" y="320.3"/>
-    <waypoint name="S2" x="-1.8" y="-330.0"/>
-    <waypoint alt="130.0" name="AF" x="93.5" y="63.9"/>
-    <waypoint alt="100.0" name="TD" x="-27.8" y="-101.7"/>
+    <waypoint name="S1" x="-579.5" y="509.8"/>
+    <waypoint name="S2" x="-369.7" y="919.8"/>
+    <waypoint alt="130.0" name="AF" x="-488.7" y="195.2"/>
+    <waypoint alt="100.0" name="TD" x="-458.2" y="447.2"/>
     <waypoint name="_BASELEG" x="1198.0" y="-214.5"/>
-    <waypoint name="CLIMB" x="-124.0" y="-115.8"/>
+    <waypoint name="CLIMB" x="-473.3" y="760.1"/>
   </waypoints>
   <sectors>
     <sector name="PolySector1234">

@@ -10,7 +10,7 @@
     <servo name="THROTTLE" no="0" min="1000" neutral="1000" max="2000"/>
     <servo name="AILERON_LEFT" no="2" min="740" neutral="1240" max="1740"/>
     <servo name="AILERON_RIGHT" no="6" min="1960" neutral="1460" max="960"/>
-    <servo name="ELEVATOR" no="3" min="2300" neutral="1700" max="1200"/>
+    <servo name="ELEVATOR" no="3" min="1200" neutral="1700" max="2300"/>
     <servo name="RUDDER" no="4" min="1000" neutral="1500" max="2000"/>
     <servo name="HATCH" no="7" min="1000" neutral="2000" max="2000"/>
     <servo name="PWRSWITCH" no="5" min="1000" neutral="2000" max="2000"/>

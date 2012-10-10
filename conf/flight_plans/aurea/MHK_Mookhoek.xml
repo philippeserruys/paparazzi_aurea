@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="280" ground_alt="5" lat0="51.603582" lon0="5.286399" max_dist_from_home="1500" name="Basic" qfu="270" security_height="100">
+<flight_plan alt="290" ground_alt="0" lat0="51.755188" lon0="4.595183" max_dist_from_home="1500" name="Basic" qfu="270" security_height="100">
   <header>
 #include "subsystems/navigation/nav_line.h"
 #include "subsystems/navigation/OSAMNav.h"
@@ -19,23 +19,23 @@
 </header>
   <waypoints>
     <waypoint name="HOME" x="-131.2" y="-85.3"/>
-    <waypoint name="STDBY" x="58.4" y="35.1"/>
+    <waypoint name="STDBY" x="-48.1" y="13.5"/>
     <waypoint name="MOB" x="-1165.3" y="644.6"/>
-    <waypoint name="1" x="-34.1" y="173.3"/>
-    <waypoint name="2" x="50.6" y="22.1"/>
-    <waypoint name="3" x="294.1" y="235.5"/>
-    <waypoint name="4" x="179.8" y="363.1"/>
-    <waypoint name="5" x="274.4" y="-525.6"/>
-    <waypoint name="6" x="-154.7" y="-416.7"/>
-    <waypoint name="7" x="-401.5" y="-163.0"/>
-    <waypoint name="8" x="34.0" y="-192.6"/>
-    <waypoint name="9" x="345.8" y="-268.5"/>
-    <waypoint name="S1" x="52.5" y="-329.4"/>
-    <waypoint name="S2" x="238.5" y="538.9"/>
-    <waypoint alt="33.0" name="AF" x="66.9" y="82.7"/>
-    <waypoint alt="-1.0" name="TD" x="24.8" y="139.9"/>
+    <waypoint name="1" x="-327.8" y="188.8"/>
+    <waypoint name="2" x="-281.0" y="-107.4"/>
+    <waypoint name="3" x="268.3" y="-162.0"/>
+    <waypoint name="4" x="253.1" y="123.9"/>
+    <waypoint name="5" x="-68.6" y="763.4"/>
+    <waypoint name="6" x="-255.2" y="335.8"/>
+    <waypoint name="7" x="-547.6" y="214.9"/>
+    <waypoint name="8" x="-747.0" y="427.2"/>
+    <waypoint name="9" x="-137.4" y="820.4"/>
+    <waypoint name="S1" x="349.6" y="-29.8"/>
+    <waypoint name="S2" x="-355.9" y="31.1"/>
+    <waypoint alt="30.0" name="AF" x="-162.4" y="52.4"/>
+    <waypoint alt="-1.0" name="TD" x="77.5" y="37.1"/>
     <waypoint name="_BASELEG" x="1198.0" y="-214.5"/>
-    <waypoint name="CLIMB" x="-13.9" y="163.5"/>
+    <waypoint name="CLIMB" x="43.8" y="-28.0"/>
   </waypoints>
   <sectors>
     <sector name="PolySector1234">
@@ -98,11 +98,11 @@
       <attitude roll="0.0" throttle="0.0" until="FALSE" vmode="throttle"/>
     </block>
     <block group="survey" name="Initialize Poly Survey 1234" strip_button="Survey1234" strip_icon="survey.png">
-      <call fun="InitializePolygonSurvey(WP_1, 4, 100, 45)"/>
+      <call fun="InitializePolygonSurvey(WP_1, 4, 100, -5)"/>
       <call fun="PolygonSurvey()"/>
     </block>
     <block group="survey" name="Initialize Poly Survey 56789" strip_button="Survey5678" strip_icon="survey.png">
-      <call fun="InitializePolygonSurvey(WP_5, 5, 100, -20)"/>
+      <call fun="InitializePolygonSurvey(WP_5, 5, 100, -5)"/>
       <call fun="PolygonSurvey()"/>
     </block>
   </blocks>

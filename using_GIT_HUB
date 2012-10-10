@@ -5,6 +5,7 @@ pwd (print working directory)
 download: git pull
 git status  (quel fichier a changé)
 git add  (pour ajouter les nouveaux fichiers)
+git add ./ (pour tous les ajouter)
 git diff    (ce qui a changé dans le fichier)
 
 upload: 
