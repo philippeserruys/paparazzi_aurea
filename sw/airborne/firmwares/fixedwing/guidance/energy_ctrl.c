@@ -180,6 +180,9 @@ void v_ctl_init( void ) {
   v_ctl_auto_throttle_climb_throttle_increment = V_CTL_AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT;
   v_ctl_auto_throttle_pitch_of_vz_pgain = V_CTL_AUTO_THROTTLE_PITCH_OF_VZ_PGAIN;
 
+  v_ctl_auto_throttle_of_airspeed_pgain = V_CTL_AUTO_THROTTLE_OF_AIRSPEED_PGAIN;
+  v_ctl_auto_throttle_of_airspeed_igain = V_CTL_AUTO_THROTTLE_OF_AIRSPEED_IGAIN;
+
   v_ctl_throttle_setpoint = 0;
 }
 
@@ -236,9 +239,13 @@ void v_ctl_climb_loop( void )
 
   // Actual Acceleration from IMU: attempt to reconstruct the actual kinematic acceleration
 #ifndef SITL
+#ifdef XSENS_BACKWARDS
+  float vdot = ( ins_x / 9.81f - sin(ins_theta) );
+#else
   struct Int32Vect3 accel_meas_body;
   INT32_RMAT_TRANSP_VMULT(accel_meas_body, imu.body_to_imu_rmat, imu.accel);
   float vdot = ACCEL_FLOAT_OF_BFP(accel_meas_body.x) / 9.81f - sinf(ahrs_float.ltp_to_imu_euler.theta);
+#endif
 #else
   float vdot = 0;
 #endif
