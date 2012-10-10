@@ -101,3 +101,4 @@ endif
 ifndef ADC_IR_NB_SAMPLES
 ADC_IR_NB_SAMPLES = 16
 endif
+

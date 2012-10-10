@@ -34,7 +34,6 @@
 #include "subsystems/gps.h"
 #include "estimator.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
-#include "firmwares/fixedwing/guidance/guidance_v.h"
 #include "firmwares/fixedwing/autopilot.h"
 #include "inter_mcu.h"
 #include "subsystems/navigation/traffic_info.h"
@@ -235,6 +234,24 @@ static inline bool_t nav_compute_baseleg(uint8_t wp_af, uint8_t wp_td, uint8_t w
   return FALSE;
 }
 
+static inline bool_t nav_compute_final_from_glide(uint8_t wp_af, uint8_t wp_td, float glide ) {
+
+  float x_0 = waypoints[wp_td].x - waypoints[wp_af].x;
+  float y_0 = waypoints[wp_td].y - waypoints[wp_af].y;
+  float h_0 = waypoints[wp_td].a - waypoints[wp_af].a;
+
+  /* Unit vector from AF to TD */
+  float d = sqrt(x_0*x_0+y_0*y_0);
+  float x_1 = x_0 / d;
+  float y_1 = y_0 / d;
+
+  waypoints[wp_af].x = waypoints[wp_td].x + x_1 * h_0 * glide;
+  waypoints[wp_af].y = waypoints[wp_td].y + y_1 * h_0 * glide;
+  waypoints[wp_af].a = waypoints[wp_af].a;
+
+  return FALSE;
+}
+
 
 /* For a landing UPWIND.
    Computes Top Of Descent waypoint from Touch Down and Approach Fix
@@ -377,7 +394,7 @@ void nav_home(void) {
   /** Nominal speed */
   nav_pitch = 0.;
   v_ctl_mode = V_CTL_MODE_AUTO_ALT;
-  nav_altitude = ground_alt+SECURITY_HEIGHT;
+  nav_altitude = ground_alt+HOME_MODE_HEIGHT;
   compute_dist2_to_home();
   dist2_to_wp = dist2_to_home;
   nav_set_altitude();
