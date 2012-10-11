@@ -240,7 +240,8 @@ void v_ctl_climb_loop( void )
   // Actual Acceleration from IMU: attempt to reconstruct the actual kinematic acceleration
 #ifndef SITL
 #ifdef XSENS_BACKWARDS
-  float vdot = ( ins_x / 9.81f - sin(ins_theta) );
+#warning XSens Airspeed
+  float vdot = ( - ins_ax / 9.81f ); //- sinf(ins_theta) );
 #else
   struct Int32Vect3 accel_meas_body;
   INT32_RMAT_TRANSP_VMULT(accel_meas_body, imu.body_to_imu_rmat, imu.accel);
