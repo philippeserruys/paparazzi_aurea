@@ -194,8 +194,8 @@ void v_ctl_init( void ) {
 #endif
 
 #ifdef V_CTL_ENERGY_TOT_PGAIN
-  v_ctl_energy_tot_pgain = V_CTL_ENERGY_TOT_PGAIN;
-  v_ctl_energy_tot_igain = V_CTL_ENERGY_TOT_IGAIN;
+  v_ctl_energy_total_pgain = V_CTL_ENERGY_TOT_PGAIN;
+  v_ctl_energy_total_igain = V_CTL_ENERGY_TOT_IGAIN;
   v_ctl_energy_diff_pgain = V_CTL_ENERGY_DIFF_PGAIN;
   v_ctl_energy_diff_igain = V_CTL_ENERGY_DIFF_IGAIN;
 #endif
