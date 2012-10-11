@@ -87,7 +87,7 @@
   </section>
 
   <section name="MISC">
-    <define name="NOMINAL_AIRSPEED" value="16." unit="m/s"/>
+    <define name="NOMINAL_AIRSPEED" value="13." unit="m/s"/>
     <define name="CARROT" value="6." unit="s"/>
     <define name="CONTROL_RATE" value="60" unit="Hz"/>
     <define name="XBEE_INIT" value="&quot;ATPL2\rATRN5\rATTT80\r&quot;"/>
@@ -96,7 +96,7 @@
 
     <define name="DEFAULT_CIRCLE_RADIUS" value="120."/>
 
-    <define name="GLIDE_AIRSPEED" value="16"/>
+    <define name="GLIDE_AIRSPEED" value="10"/>
     <define name="GLIDE_VSPEED" value="3."/>
     <define name="GLIDE_PITCH" value="20" unit="deg"/>
   </section>
@@ -108,31 +108,29 @@
    <define name="ALTITUDE_PGAIN" value="0.10000000149" unit="(m/s)/m"/>
    <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/>
 
-   <define name="AUTO_AIRSPEED_SETPOINT" value="16." unit="m/s"/>
 
     <!-- auto throttle inner loop -->
     <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.486000001431" unit="%"/>
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25" unit="%"/>
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85" unit="%"/>
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.305000007153" unit="%/(m/s)"/>
+    <define name="AUTO_THROTTLE_LOITER_TRIM" value="1000" unit="pprz_t"/>
+    <define name="AUTO_THROTTLE_DASH_TRIM" value="-2500" unit="pprz_t"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.15000000596" unit="%/(m/s)"/>
     <!--<define name="AUTO_THROTTLE_PGAIN" value="-0.01"/>
     <define name="AUTO_THROTTLE_IGAIN" value="0.2"/>-->
-
-    <define name="AUTO_THROTTLE_OF_AIRSPEED_PGAIN" value="0.036" />
-    <define name="AUTO_THROTTLE_OF_AIRSPEED_IGAIN" value="0.007" />
 
     <define name="AUTO_THROTTLE_PGAIN" value="0."/>
     <define name="AUTO_THROTTLE_IGAIN" value="0."/>
 
-    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.116999998689" unit="rad/(m/s)"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.10000000149" unit="rad/(m/s)"/>
 
     <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
-    <define name="COURSE_PGAIN" value="0.757000029087"/>
-    <define name="COURSE_DGAIN" value="0.411000013351"/>
-    <define name="COURSE_PRE_BANK_CORRECTION" value="0.634999990463"/>
+    <define name="COURSE_PGAIN" value="0.797999978065"/>
+    <define name="COURSE_DGAIN" value="0.358000010252"/>
+    <define name="COURSE_PRE_BANK_CORRECTION" value="0.985000014305"/>
 
     <define name="ROLL_MAX_SETPOINT" value="0.651000022888" unit="radians"/>
     <define name="PITCH_MAX_SETPOINT" value="0.5" unit="radians"/>
@@ -219,10 +217,10 @@
       <define name="STRONG_WIND"/>
       <define name="WIND_INFO"/>
       <define name="WIND_INFO_RET"/>
+      <define name="LOITER_TRIM"/>
       <define name="XSENS_BACKWARDS"/>
       <define name="ALT_KALMAN"/>
       <define name="AGR_CLIMB"/>
-      <define name="USE_AIRSPEED"/>
       <define name="TUNE_AGRESSIVE_CLIMB"/>
 
     <subsystem name="radio_control" type="ppm"/>
@@ -233,7 +231,7 @@
     </subsystem>
 
     <!-- Actuators -->
-    <subsystem name="control" type="energy"/>
+    <subsystem name="control"/>
     <!-- Sensors -->
     <subsystem name="navigation" type="extra"/>
     <subsystem name="ins" type="xsens">
