@@ -139,6 +139,9 @@
 
     <define name="ROLL_ATTITUDE_GAIN" value="7500."/>
     <define name="ROLL_RATE_GAIN" value="300."/>
+
+    <define name="ROLL_ATTITUDE_IGAIN" value="0.015"/>
+    <define name="PITCH_ATTITUDE_IGAIN" value="0.015"/>
   </section>
 
   <section name="AGGRESSIVE" prefix="AGR_">
@@ -220,7 +223,7 @@
     <subsystem name="radio_control" type="ppm"/>
 
     <!-- Communication -->
-    <subsystem name="telemetry" type="transparent">
+    <subsystem name="telemetry" type="xbee_api">
       <configure name="MODEM_BAUD" value="B57600"/>
     </subsystem>
 
@@ -228,7 +231,9 @@
     <subsystem name="control"/>
     <!-- Sensors -->
     <subsystem name="navigation" type="extra"/>
-    <subsystem name="gps" type="xsens"/>
+    <subsystem name="ins" type="xsens">
+      <configure name="XSENS_UART_NR" value="0"/>
+    </subsystem>
 
   </firmware>
 
