@@ -78,5 +78,9 @@
         <arg flag="-c" constant="'*:telemetry:ATTITUDE:phi'"/>
       </program>
     </session>
+    <session name="PlotSpeed">
+      <program name="Real-time Plotter"/>
+      <program name="Real-time Plotter"/>
+    </session>
   </section>
 </control_panel>

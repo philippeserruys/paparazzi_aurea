@@ -126,7 +126,7 @@ extern void nav_circle_XY(float x, float y, float radius);
 #define NavCircleCount() (fabs(nav_circle_radians) / (2*M_PI))
 #define NavCircleQdr() ({ float qdr = DegOfRad(M_PI_2 - nav_circle_trigo_qdr); NormCourse(qdr); qdr; })
 
-#define CloseDegAngles(_c1, _c2) ({ float _diff = _c1 - _c2; NormCourse(_diff); 350 < _diff || _diff < 10; })
+#define CloseDegAngles(_c1, _c2) ({ float _diff = _c1 - _c2; NormCourse(_diff); 340 < _diff || _diff < 20; })
 
 /** True if x (in degrees) is close to the current QDR (less than 10 degrees)*/
 #define NavQdrCloseTo(x) CloseDegAngles(x, NavCircleQdr())

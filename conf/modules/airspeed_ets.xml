@@ -23,7 +23,7 @@
     <file name="airspeed_ets.h"/>
   </header>
   <init fun="airspeed_ets_init()"/>
-  <periodic fun="airspeed_ets_read_periodic()" freq="10."/>
+  <periodic fun="airspeed_ets_read_periodic()" freq="50."/>
   <event fun="AirspeedEtsEvent()"/>
 
   <makefile>

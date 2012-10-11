@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
 
-<flight_plan alt="160" ground_alt="94" lat0="52.4786" lon0="4.691292" max_dist_from_home="1500" name="Basic" qfu="270" security_height="145">
+<flight_plan alt="120" ground_alt="94" lat0="52.4786" lon0="4.691292" max_dist_from_home="1500" name="Basic" qfu="270" security_height="145">
   <header>
 #include "subsystems/navigation/nav_line.h"
 #include "subsystems/navigation/OSAMNav.h"
@@ -32,8 +32,8 @@
     <waypoint name="9" x="25.7" y="73.8"/>
     <waypoint name="S1" x="-251.9" y="252.5"/>
     <waypoint name="S2" x="285.6" y="-246.2"/>
-    <waypoint alt="123.0" name="AF" x="172.8" y="94.1"/>
-    <waypoint alt="93.0" name="TD" x="1.9" y="-41.5"/>
+    <waypoint alt="30.0" name="AF" x="172.8" y="94.1"/>
+    <waypoint alt="0.0" name="TD" x="1.9" y="-41.5"/>
     <waypoint name="_BASELEG" x="1198.0" y="-214.5"/>
     <waypoint name="CLIMB" x="-124.0" y="-115.8"/>
   </waypoints>
@@ -95,7 +95,7 @@
     </block>
     <block name="final">
       <go approaching_time="0" from="AF" hmode="route" throttle="0.0" vmode="throttle" wp="TD"/>
-      <attitude roll="0.0" throttle="0.0" until="FALSE" vmode="throttle"/>
+      <attitude roll="0.0" pitch="-7.0" throttle="0.0" until="FALSE" vmode="throttle"/>
     </block>
     <block group="survey" name="Initialize Poly Survey 1234" strip_button="Survey1234" strip_icon="survey.png">
       <call fun="InitializePolygonSurvey(WP_1, 4, 100, 45)"/>

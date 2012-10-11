@@ -109,28 +109,28 @@
    <define name="AUTO_AIRSPEED_SETPOINT" value="16." unit="m/s"/>
 
    <!-- outer loop proportional gain -->
-   <define name="ALTITUDE_PGAIN" value="0.1" unit="(m/s)/m"/>
-   <define name="AIRSPEED_PGAIN" value="0.1" unit="(m/s)/m"/>
-   <define name="MAX_CLIMB" value="2." unit="m/s"/>
-   <define name="MAX_ACCELERATION" value="0.5" unit="m/s"/>
+   <define name="ALTITUDE_PGAIN" value="0.25" unit="(m/s)/m"/>
+   <define name="AIRSPEED_PGAIN" value="0.638000011444" unit="(m/s)/m"/>
+   <define name="MAX_CLIMB" value="2.12800002098" unit="m/s"/>
+   <define name="MAX_ACCELERATION" value="0.552999973297" unit="m/s"/>
 
    <!-- total energy controller -->
-   <define name="ENERGY_TOT_PGAIN" value="0" />
-   <define name="ENERGY_TOT_IGAIN" value="0" />
-   <define name="ENERGY_DIFF_PGAIN" value="0" />
-   <define name="ENERGY_DIFF_IGAIN" value="0" />
+   <define name="ENERGY_TOT_PGAIN" value="0.324000000954"/>
+   <define name="ENERGY_TOT_IGAIN" value="0.964999973774"/>
+   <define name="ENERGY_DIFF_PGAIN" value="0.728999972343"/>
+   <define name="ENERGY_DIFF_IGAIN" value="0.0900000035763"/>
 
 
     <!-- auto throttle inner loop -->
     <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.486000001431" unit="%"/>
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25" unit="%"/>
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85" unit="%"/>
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0" unit="%/(m/s)"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.141000002623" unit="%/(m/s)"/>
     <!--<define name="AUTO_THROTTLE_PGAIN" value="-0.01"/>
     <define name="AUTO_THROTTLE_IGAIN" value="0.2"/>-->
 
-    <define name="AUTO_THROTTLE_OF_AIRSPEED_PGAIN" value="0" />
-    <define name="AUTO_THROTTLE_OF_AIRSPEED_IGAIN" value="0" />
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_PGAIN" value="0"/>
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_IGAIN" value="0"/>
 
 
 
@@ -138,7 +138,7 @@
     <define name="AUTO_THROTTLE_PGAIN" value="0."/>
     <define name="AUTO_THROTTLE_IGAIN" value="0."/>
 
-    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0.116999998689" unit="rad/(m/s)"/>
+    <define name="AUTO_THROTTLE_PITCH_OF_VZ_PGAIN" value="0." unit="rad/(m/s)"/>
 
     <define name="THROTTLE_SLEW_LIMITER" value="2" unit="s"/>
   </section>
