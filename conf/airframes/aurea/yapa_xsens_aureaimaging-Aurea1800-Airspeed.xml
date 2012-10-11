@@ -103,23 +103,37 @@
 
   <section name="VERTICAL CONTROL" prefix="V_CTL_">
     <define name="POWER_CTL_BAT_NOMINAL" value="11.1" unit="volt"/>
-    <!-- outer loop proportional gain -->
-
-   <define name="ALTITUDE_PGAIN" value="0.10000000149" unit="(m/s)/m"/>
    <define name="ALTITUDE_MAX_CLIMB" value="2." unit="m/s"/>
 
+   <!-- setpoints -->
    <define name="AUTO_AIRSPEED_SETPOINT" value="16." unit="m/s"/>
+
+   <!-- outer loop proportional gain -->
+   <define name="ALTITUDE_PGAIN" value="0.1" unit="(m/s)/m"/>
+   <define name="AIRSPEED_PGAIN" value="0.1" unit="(m/s)/m"/>
+   <define name="MAX_CLIMB" value="2." unit="m/s"/>
+   <define name="MAX_ACCELERATION" value="0.5" unit="m/s"/>
+
+   <!-- total energy controller -->
+   <define name="ENERGY_TOT_PGAIN" value="0" />
+   <define name="ENERGY_TOT_IGAIN" value="0" />
+   <define name="ENERGY_DIFF_PGAIN" value="0" />
+   <define name="ENERGY_DIFF_IGAIN" value="0" />
+
 
     <!-- auto throttle inner loop -->
     <define name="AUTO_THROTTLE_NOMINAL_CRUISE_THROTTLE" value="0.486000001431" unit="%"/>
     <define name="AUTO_THROTTLE_MIN_CRUISE_THROTTLE" value="0.25" unit="%"/>
     <define name="AUTO_THROTTLE_MAX_CRUISE_THROTTLE" value="0.85" unit="%"/>
-    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0.305000007153" unit="%/(m/s)"/>
+    <define name="AUTO_THROTTLE_CLIMB_THROTTLE_INCREMENT" value="0" unit="%/(m/s)"/>
     <!--<define name="AUTO_THROTTLE_PGAIN" value="-0.01"/>
     <define name="AUTO_THROTTLE_IGAIN" value="0.2"/>-->
 
-    <define name="AUTO_THROTTLE_OF_AIRSPEED_PGAIN" value="0.036" />
-    <define name="AUTO_THROTTLE_OF_AIRSPEED_IGAIN" value="0.007" />
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_PGAIN" value="0" />
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_IGAIN" value="0" />
+
+
+
 
     <define name="AUTO_THROTTLE_PGAIN" value="0."/>
     <define name="AUTO_THROTTLE_IGAIN" value="0."/>
