@@ -1,6 +1,7 @@
 Paparazzi 4.1.0_testing
 =======================
 
+
 First release candidate for next stable release.
 
 - Total energy control
