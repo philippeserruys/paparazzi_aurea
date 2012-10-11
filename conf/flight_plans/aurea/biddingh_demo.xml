@@ -1,6 +1,6 @@
-<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+<!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
 
-<flight_plan alt="180" ground_alt="0" lat0="52.479389" lon0="5.769402" max_dist_from_home="1500" name="Basic" qfu="270" security_height="100">
+<flight_plan alt="280" ground_alt="0" lat0="52.479389" lon0="5.769402" max_dist_from_home="1500" name="Basic" qfu="270" security_height="100">
   <header>
 #include "subsystems/navigation/nav_line.h"
 #include "subsystems/navigation/OSAMNav.h"
@@ -19,20 +19,20 @@
 </header>
   <waypoints>
     <waypoint name="HOME" x="-131.2" y="-85.3"/>
-    <waypoint name="STDBY" x="-297.7" y="457.1"/>
+    <waypoint name="STDBY" x="-173.8" y="312.4"/>
     <waypoint name="MOB" x="-555.2" y="413.0"/>
     <waypoint name="1" x="16.7" y="-250.3"/>
     <waypoint name="2" x="244.9" y="42.1"/>
     <waypoint name="3" x="15.1" y="207.4"/>
     <waypoint name="4" x="-203.1" y="-83.9"/>
-    <waypoint name="5" x="-147.6" y="248.8"/>
-    <waypoint name="6" x="-237.3" y="315.3"/>
-    <waypoint name="7" x="-367.2" y="427.6"/>
-    <waypoint name="8" x="-218.7" y="625.0"/>
-    <waypoint name="9" x="16.2" y="456.9"/>
+    <waypoint name="5" x="165.4" y="313.9"/>
+    <waypoint name="6" x="28.2" y="128.8"/>
+    <waypoint name="7" x="-251.4" y="-20.4"/>
+    <waypoint name="8" x="-559.3" y="198.9"/>
+    <waypoint name="9" x="-236.2" y="610.5"/>
     <waypoint name="S1" x="-16.8" y="549.6"/>
     <waypoint name="S2" x="-272.6" y="96.9"/>
-    <waypoint alt="30.0" name="AF" x="-262.9" y="486.4"/>
+    <waypoint alt="30.0" name="AF" x="-132.8" y="385.2"/>
     <waypoint alt="2.0" name="TD" x="-272.1" y="424.7"/>
     <waypoint name="_BASELEG" x="1198.0" y="-214.5"/>
     <waypoint alt="90.0" name="CLIMB" x="-299.0" y="344.6"/>
@@ -98,11 +98,11 @@
       <attitude roll="0.0" throttle="0.0" until="FALSE" vmode="throttle"/>
     </block>
     <block group="survey" name="Initialize Poly Survey 1234" strip_button="Survey1234" strip_icon="survey.png">
-      <call fun="InitializePolygonSurvey(WP_1, 4, 100, 45)"/>
+      <call fun="InitializePolygonSurvey(WP_1, 4, 100, -45)"/>
       <call fun="PolygonSurvey()"/>
     </block>
     <block group="survey" name="Initialize Poly Survey 56789" strip_button="Survey5678" strip_icon="survey.png">
-      <call fun="InitializePolygonSurvey(WP_5, 5, 100, 45)"/>
+      <call fun="InitializePolygonSurvey(WP_5, 5, 100, -45)"/>
       <call fun="PolygonSurvey()"/>
     </block>
   </blocks>

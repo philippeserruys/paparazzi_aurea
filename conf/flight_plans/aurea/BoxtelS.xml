@@ -1,4 +1,4 @@
-<!DOCTYPE flight_plan SYSTEM "../flight_plan.dtd">
+<!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
 
 <flight_plan alt="270" ground_alt="5" lat0="51.593759" lon0="5.285450" max_dist_from_home="1500" name="Basic" qfu="270" security_height="100">
   <header>
@@ -19,7 +19,7 @@
 </header>
   <waypoints>
     <waypoint name="HOME" x="-131.2" y="-85.3"/>
-    <waypoint name="STDBY" x="58.4" y="35.1"/>
+    <waypoint name="STDBY" x="250.9" y="-27.8"/>
     <waypoint name="MOB" x="-1165.3" y="644.6"/>
     <waypoint name="1" x="-34.1" y="173.3"/>
     <waypoint name="2" x="50.6" y="22.1"/>
@@ -32,10 +32,10 @@
     <waypoint name="9" x="360.2" y="239.9"/>
     <waypoint name="S1" x="52.5" y="-329.4"/>
     <waypoint name="S2" x="238.5" y="538.9"/>
-    <waypoint alt="33.0" name="AF" x="66.9" y="82.7"/>
-    <waypoint alt="-1.0" name="TD" x="24.8" y="139.9"/>
+    <waypoint alt="46.0" name="AF" x="335.4" y="45.1"/>
+    <waypoint alt="-1.0" name="TD" x="438.3" y="34.9"/>
     <waypoint name="_BASELEG" x="1198.0" y="-214.5"/>
-    <waypoint name="CLIMB" x="-13.9" y="163.5"/>
+    <waypoint name="CLIMB" x="420.3" y="34.6"/>
   </waypoints>
   <sectors>
     <sector name="PolySector1234">
