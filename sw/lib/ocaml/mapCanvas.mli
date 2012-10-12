@@ -86,7 +86,7 @@ class widget :
       ?width:int ->
       ?fill_color:string ->
       ?color:string ->
-      ?number:string -> Latlong.geographic -> Latlong.fmeter -> GnoCanvas.text
+      ?number:string -> Latlong.geographic -> Latlong.fmeter -> GnoCanvas.ellipse
     method pt2D_of : Latlong.geographic -> Geometry_2d.pt_2D
     method region : ((float * float) * (Latlong.fmeter * Latlong.fmeter)) option
     method register_to_fit : geographic -> unit
