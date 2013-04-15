@@ -77,7 +77,7 @@
 
    <message name="BAT" id="12">
      <field name="throttle" type="int16" unit="pprz"/>
-     <field name="voltage" type="uint8" unit="1e-1V" alt_unit="V" alt_unit_coef="0.1"/>
+     <field name="voltage" type="uint16" unit="1e-1V" alt_unit="V" alt_unit_coef="0.1"/>
      <field name="amps" type="int16" unit="1e-2A" alt_unit="A" alt_unit_coef="0.01"/>
      <field name="flight_time" type="uint16" unit="s"/>
      <field name="kill_auto_throttle" type="uint8" unit="bool"/>
@@ -110,6 +110,7 @@
      <field name="y" type="float" format="%.0f" unit="m"/>
      <field name="altitude" type="float" format="%.0f"  unit="m"/>
      <field name="climb" type="float" format="%.1f"  unit="m/s"></field>
+     <field name="airspeed" type="float" format="%.1f"  unit="m/s"></field>
    </message>
 
    <message name="GPS_SOL" id="17">
@@ -726,7 +727,7 @@
     <field name="rc_status" type="uint8" values="OK|LOST|REALLY_LOST"/>
     <field name="frame_rate" type="uint8" unit="Hz"/>
     <field name="mode" type="uint8" values="MANUAL|AUTO|FAILSAFE"/>
-    <field name="vsupply" type="uint8" unit="decivolt"/>
+    <field name="vsupply" type="uint16" unit="decivolt"/>
     <field name="current" type="int32" unit="mA"/>
   </message>
 
@@ -1756,6 +1757,7 @@
     <field name="t_amb" type="float" unit="deg C"/>
     <field name="windspeed" type="float" unit="m/s"/>
     <field name="wind_from" type="float" unit="deg"/>
+    <field name="humidity" type="float" unit="%"/>
   </message>
 
   <message name="IMU_TURNTABLE" id="220">
@@ -1792,7 +1794,7 @@
     <field name="ap_motors_on" type="uint8" values="MOTORS_OFF|MOTORS_ON"/>
     <field name="ap_h_mode"    type="uint8" values="KILL|RATE|ATTITUDE|HOVER|NAV"/>
     <field name="ap_v_mode"    type="uint8" values="KILL|RC_DIRECT|RC_CLIMB|CLIMB|HOVER|NAV"/>
-    <field name="vsupply"      type="uint8" unit="decivolt"/>
+    <field name="vsupply"      type="uint16" unit="decivolt"/>
     <field name="cpu_time"     type="uint16" unit="s"/>
   </message>
 

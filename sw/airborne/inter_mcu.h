@@ -58,12 +58,14 @@ struct fbw_state {
 #endif
   uint8_t status;
   uint8_t nb_err;
-  uint8_t vsupply; 	/* 1e-1 V */
-  int32_t current;	/* milliAmps */
+  uint16_t vsupply; ///< 1e-1 V
+  int32_t current;  ///< milliAmps
 };
 
 struct ap_state {
   pprz_t commands[COMMANDS_NB];
+  pprz_t command_roll_trim;
+  pprz_t command_pitch_trim;
 };
 
 // Status bits from FBW to AUTOPILOT

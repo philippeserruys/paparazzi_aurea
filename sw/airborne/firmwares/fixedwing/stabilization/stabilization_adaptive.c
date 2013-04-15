@@ -1,6 +1,4 @@
 /*
- * Paparazzi $Id: fw_h_ctl.c 3603 2009-07-01 20:06:53Z hecto $
- *
  * Copyright (C) 2009-2010 The Paparazzi Team
  *
  * This file is part of paparazzi.
@@ -35,7 +33,7 @@
 #include "estimator.h"
 #include "subsystems/nav.h"
 #include "generated/airframe.h"
-#include "firmwares/fixedwing/guidance/guidance_v.h"
+#include CTRL_TYPE_H
 #include "firmwares/fixedwing/autopilot.h"
 
 

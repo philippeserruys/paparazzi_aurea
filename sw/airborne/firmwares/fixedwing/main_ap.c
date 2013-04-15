@@ -38,7 +38,7 @@
 #include "mcu.h"
 #include "mcu_periph/sys_time.h"
 
-#include "link_mcu.h"
+#include "link_mcu_spi.h"
 
 // Sensors
 #if USE_GPS
@@ -58,7 +58,7 @@
 #include "firmwares/fixedwing/autopilot.h"
 #include "estimator.h"
 #include "firmwares/fixedwing/stabilization/stabilization_attitude.h"
-#include "firmwares/fixedwing/guidance/guidance_v.h"
+#include CTRL_TYPE_H
 #include "subsystems/nav.h"
 #include "generated/flight_plan.h"
 #ifdef TRAFFIC_INFO
@@ -125,7 +125,7 @@ bool_t launch = FALSE;
 /** Supply voltage in deciVolt.
  * This the ap copy of the measurement from fbw
  */
-uint8_t vsupply;
+uint16_t vsupply;
 
 /** Supply current in milliAmpere.
  * This the ap copy of the measurement from fbw
@@ -191,7 +191,7 @@ void init_ap( void ) {
 #endif
 
   /************* Links initialization ***************/
-#if defined MCU_SPI_LINK
+#if defined MCU_SPI_LINK || defined MCU_UART_LINK
   link_mcu_init();
 #endif
 #if USE_AUDIO_TELEMETRY
@@ -488,26 +488,8 @@ void navigation_task( void ) {
 #endif
     if (lateral_mode >=LATERAL_MODE_COURSE)
       h_ctl_course_loop(); /* aka compute nav_desired_roll */
-    if (v_ctl_mode >= V_CTL_MODE_AUTO_CLIMB)
-      v_ctl_climb_loop();
-    if (v_ctl_mode == V_CTL_MODE_AUTO_THROTTLE)
-      v_ctl_throttle_setpoint = nav_throttle_setpoint;
 
-#if defined V_CTL_THROTTLE_IDLE
-    Bound(v_ctl_throttle_setpoint, TRIM_PPRZ(V_CTL_THROTTLE_IDLE*MAX_PPRZ), MAX_PPRZ);
-#endif
-
-#ifdef V_CTL_POWER_CTL_BAT_NOMINAL
-    if (vsupply > 0.) {
-      v_ctl_throttle_setpoint *= 10. * V_CTL_POWER_CTL_BAT_NOMINAL / (float)vsupply;
-      v_ctl_throttle_setpoint = TRIM_UPPRZ(v_ctl_throttle_setpoint);
-    }
-#endif
-
-    h_ctl_pitch_setpoint = nav_pitch;
-    Bound(h_ctl_pitch_setpoint, H_CTL_PITCH_MIN_SETPOINT, H_CTL_PITCH_MAX_SETPOINT);
-    if (kill_throttle || (!estimator_flight_time && !launch))
-      v_ctl_throttle_setpoint = 0;
+    // climb_loop(); //4Hz
   }
   energy += ((float)current) / 3600.0f * 0.25f;	// mAh = mA * dt (4Hz -> hours)
 }
@@ -525,6 +507,32 @@ void attitude_loop( void ) {
   ahrs_update_infrared();
 #endif /* USE_INFRARED */
 
+  if (pprz_mode >= PPRZ_MODE_AUTO2)
+  {
+    if (v_ctl_mode == V_CTL_MODE_AUTO_THROTTLE)
+      v_ctl_throttle_setpoint = nav_throttle_setpoint;
+    else if (v_ctl_mode >= V_CTL_MODE_AUTO_CLIMB)
+    {
+      v_ctl_climb_loop();
+    }
+
+#if defined V_CTL_THROTTLE_IDLE
+    Bound(v_ctl_throttle_setpoint, TRIM_PPRZ(V_CTL_THROTTLE_IDLE*MAX_PPRZ), MAX_PPRZ);
+#endif
+
+#ifdef V_CTL_POWER_CTL_BAT_NOMINAL
+    if (vsupply > 0.) {
+      v_ctl_throttle_setpoint *= 10. * V_CTL_POWER_CTL_BAT_NOMINAL / (float)vsupply;
+      v_ctl_throttle_setpoint = TRIM_UPPRZ(v_ctl_throttle_setpoint);
+    }
+#endif
+
+    h_ctl_pitch_setpoint = nav_pitch;
+    Bound(h_ctl_pitch_setpoint, H_CTL_PITCH_MIN_SETPOINT, H_CTL_PITCH_MAX_SETPOINT);
+    if (kill_throttle || (!estimator_flight_time && !launch))
+      v_ctl_throttle_setpoint = 0;
+  }
+
   h_ctl_attitude_loop(); /* Set  h_ctl_aileron_setpoint & h_ctl_elevator_setpoint */
   v_ctl_throttle_slew();
   ap_state->commands[COMMAND_THROTTLE] = v_ctl_throttle_slewed;
@@ -532,7 +540,7 @@ void attitude_loop( void ) {
 
   ap_state->commands[COMMAND_PITCH] = h_ctl_elevator_setpoint;
 
-#if defined MCU_SPI_LINK
+#if defined MCU_SPI_LINK || defined MCU_UART_LINK
   link_mcu_send();
 #elif defined INTER_MCU && defined SINGLE_MCU
   /**Directly set the flag indicating to FBW that shared buffer is available*/
@@ -606,7 +614,9 @@ void monitor_task( void ) {
 void event_task_ap( void ) {
 
 #ifndef SINGLE_MCU
+#if defined USE_I2C0  || defined USE_I2C1  || defined USE_I2C2
   i2c_event();
+#endif
 #endif
 
 #if USE_AHRS
@@ -625,7 +635,7 @@ void event_task_ap( void ) {
   DatalinkEvent();
 
 
-#ifdef MCU_SPI_LINK
+#if defined MCU_SPI_LINK || defined MCU_UART_LINK
   link_mcu_event_task();
 #endif
 
@@ -652,7 +662,9 @@ void event_task_ap( void ) {
 #if USE_GPS
 static inline void on_gps_solution( void ) {
   estimator_update_state_gps();
+#if USE_AHRS
   ahrs_update_gps();
+#endif
 #ifdef GPS_TRIGGERED_FUNCTION
   GPS_TRIGGERED_FUNCTION();
 #endif

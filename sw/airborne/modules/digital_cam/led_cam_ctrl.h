@@ -52,15 +52,6 @@
 
 extern uint8_t dc_timer;
 
-static inline void led_cam_ctrl_init(void)
-{
-  // Call common DC init
-  dc_init();
-
-  // Do LED specific DC init
-  dc_timer = 0;
-}
-
 #ifndef DC_PUSH
 #define DC_PUSH LED_ON
 #endif
@@ -77,40 +68,36 @@ static inline void led_cam_ctrl_init(void)
 #error DC: Please specify at least a SHUTTER LED
 #endif
 
-/* Command The Camera */
-static inline void dc_send_command(uint8_t cmd)
+static inline void led_cam_ctrl_init(void)
 {
-  dc_timer = DC_SHUTTER_DELAY;
-  switch (cmd)
-  {
-    case DC_SHOOT:
-      DC_PUSH(DC_SHUTTER_LED);
-      dc_send_shot_position();
-      break;
+  // Call common DC init
+  dc_init();
+
+  // Do LED specific DC init
+  dc_timer = 0;
+
+  DC_RELEASE(DC_SHUTTER_LED);
 #ifdef DC_ZOOM_IN_LED
-    case DC_TALLER:
-      DC_PUSH(DC_ZOOM_IN_LED);
-      break;
+    DC_RELEASE(DC_ZOOM_IN_LED);
 #endif
 #ifdef DC_ZOOM_OUT_LED
-    case DC_WIDER:
-      DC_PUSH(DC_ZOOM_OUT_LED);
-      break;
+    DC_RELEASE(DC_ZOOM_OUT_LED);
 #endif
 #ifdef DC_POWER_LED
-    case DC_POWER:
-      DC_PUSH(DC_POWER_LED);
-      break;
+    DC_RELEASE(DC_POWER_LED);
 #endif
-    default:
-      break;
-  }
 }
 
 
 /* 4Hz Periodic */
 static inline void led_cam_ctrl_periodic( void )
 {
+#ifdef DC_SHOOT_ON_BUTTON_RELEASE
+  if (dc_timer==1) {
+    dc_send_shot_position();
+  }
+#endif
+
   if (dc_timer) {
     dc_timer--;
   } else {

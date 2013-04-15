@@ -24,6 +24,7 @@ FLASH_MODE = DFU
 endif
 
 ifndef NO_LUFTBOOT
+$(TARGET).CFLAGS+=-DLUFTBOOT
 $(TARGET).LDSCRIPT = $(SRC_ARCH)/lisa_m_2.0_luftboot.ld
 endif
 
@@ -100,3 +101,4 @@ endif
 ifndef ADC_IR_NB_SAMPLES
 ADC_IR_NB_SAMPLES = 16
 endif
+

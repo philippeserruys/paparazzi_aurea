@@ -57,6 +57,7 @@ static inline void compute_body_euler_and_rmat_from_quat(void);
 static inline void compute_imu_orientation(void);
 static inline void compute_body_orientation(void);
 
+
 void ahrs_init(void) {
 
   ahrs.status = AHRS_UNINIT;
@@ -90,6 +91,8 @@ void ahrs_init(void) {
 #else
   ahrs_impl.use_gravity_heuristic = FALSE;
 #endif
+
+  VECT3_ASSIGN(ahrs_impl.mag_h, MAG_BFP_OF_REAL(AHRS_H_X), MAG_BFP_OF_REAL(AHRS_H_Y), MAG_BFP_OF_REAL(AHRS_H_Z));
 
 }
 
@@ -166,6 +169,8 @@ void ahrs_update_accel(void) {
                            RMAT_ELMT(ahrs.ltp_to_imu_rmat, 2,2)};
   struct Int32Vect3 residual;
 
+  struct Int32Vect3 pseudo_gravity_measurement;
+
   if (ahrs_impl.correct_gravity && ahrs_impl.ltp_vel_norm_valid) {
     /*
      * centrifugal acceleration in body frame
@@ -176,33 +181,41 @@ void ahrs_update_accel(void) {
      */
 
     // FIXME: check overflows !
-    const struct Int32Vect3 vel_tangential_body = {(ahrs_impl.ltp_vel_norm>>INT32_ACCEL_FRAC), 0.0, 0.0};
+#define COMPUTATION_FRAC 16
+
+    const struct Int32Vect3 vel_tangential_body = {ahrs_impl.ltp_vel_norm >> COMPUTATION_FRAC, 0, 0};
     struct Int32Vect3 acc_c_body;
     VECT3_RATES_CROSS_VECT3(acc_c_body, ahrs.body_rate, vel_tangential_body);
-    INT32_VECT3_RSHIFT(acc_c_body, acc_c_body, INT32_SPEED_FRAC+INT32_RATE_FRAC-INT32_ACCEL_FRAC-INT32_ACCEL_FRAC);
+    INT32_VECT3_RSHIFT(acc_c_body, acc_c_body, INT32_SPEED_FRAC+INT32_RATE_FRAC-INT32_ACCEL_FRAC-COMPUTATION_FRAC);
 
     /* convert centrifucal acceleration from body to imu frame */
     struct Int32Vect3 acc_c_imu;
     INT32_RMAT_VMULT(acc_c_imu, imu.body_to_imu_rmat, acc_c_body);
 
     /* and subtract it from imu measurement to get a corrected measurement of the gravitiy vector */
-    struct Int32Vect3 corrected_gravity;
-    INT32_VECT3_DIFF(corrected_gravity, imu.accel, acc_c_imu);
-
-    /* compute the residual of gravity vector in imu frame */
-    INT32_VECT3_CROSS_PRODUCT(residual, corrected_gravity, c2);
+    INT32_VECT3_DIFF(pseudo_gravity_measurement, imu.accel, acc_c_imu);
   } else {
-    INT32_VECT3_CROSS_PRODUCT(residual, imu.accel, c2);
+    VECT3_COPY(pseudo_gravity_measurement, imu.accel);
   }
+
+  /* compute the residual of the pseudo gravity vector in imu frame */
+  INT32_VECT3_CROSS_PRODUCT(residual, pseudo_gravity_measurement, c2);
 
 
   int32_t inv_weight;
   if (ahrs_impl.use_gravity_heuristic) {
     /* heuristic on acceleration norm */
+
+    /* FIR filtered pseudo_gravity_measurement */
+    static struct Int32Vect3 filtered_gravity_measurement = {0, 0, 0};
+    VECT3_SMUL(filtered_gravity_measurement, filtered_gravity_measurement, 7);
+    VECT3_ADD(filtered_gravity_measurement, pseudo_gravity_measurement);
+    VECT3_SDIV(filtered_gravity_measurement, filtered_gravity_measurement, 8);
+
     int32_t acc_norm;
-    INT32_VECT3_NORM(acc_norm, imu.accel);
+    INT32_VECT3_NORM(acc_norm, filtered_gravity_measurement);
     const int32_t acc_norm_d = ABS(ACCEL_BFP_OF_REAL(9.81)-acc_norm);
-    inv_weight = Chop(6*acc_norm_d/ACCEL_BFP_OF_REAL(9.81), 1, 6);
+    inv_weight = Chop(50*acc_norm_d/ACCEL_BFP_OF_REAL(9.81), 1, 50);
   }
   else {
     inv_weight = 1;
@@ -223,9 +236,9 @@ void ahrs_update_accel(void) {
   //  ahrs_impl.high_rez_bias.q += residual.y*3;
   //  ahrs_impl.high_rez_bias.r += residual.z*3;
 
-  ahrs_impl.high_rez_bias.p += residual.x/inv_weight;
-  ahrs_impl.high_rez_bias.q += residual.y/inv_weight;
-  ahrs_impl.high_rez_bias.r += residual.z/inv_weight;
+  ahrs_impl.high_rez_bias.p += residual.x/(2*inv_weight);
+  ahrs_impl.high_rez_bias.q += residual.y/(2*inv_weight);
+  ahrs_impl.high_rez_bias.r += residual.z/(2*inv_weight);
 
 
   /*                        */
@@ -243,11 +256,9 @@ void ahrs_update_mag(void) {
 
 
 static inline void ahrs_update_mag_full(void) {
-  const struct Int32Vect3 expected_ltp = {MAG_BFP_OF_REAL(AHRS_H_X),
-                                          MAG_BFP_OF_REAL(AHRS_H_Y),
-                                          MAG_BFP_OF_REAL(AHRS_H_Z)};
+
   struct Int32Vect3 expected_imu;
-  INT32_RMAT_VMULT(expected_imu, ahrs.ltp_to_imu_rmat, expected_ltp);
+  INT32_RMAT_VMULT(expected_imu, ahrs.ltp_to_imu_rmat, ahrs_impl.mag_h);
 
   struct Int32Vect3 residual;
   INT32_VECT3_CROSS_PRODUCT(residual, imu.mag, expected_imu);
@@ -269,16 +280,13 @@ static inline void ahrs_update_mag_full(void) {
 
 static inline void ahrs_update_mag_2d(void) {
 
-  const struct Int32Vect2 expected_ltp = {MAG_BFP_OF_REAL(AHRS_H_X),
-                                          MAG_BFP_OF_REAL(AHRS_H_Y)};
-
   struct Int32Vect3 measured_ltp;
   INT32_RMAT_TRANSP_VMULT(measured_ltp, ahrs.ltp_to_imu_rmat, imu.mag);
 
   struct Int32Vect3 residual_ltp =
     { 0,
       0,
-      (measured_ltp.x * expected_ltp.y - measured_ltp.y * expected_ltp.x)/(1<<5)};
+      (measured_ltp.x * ahrs_impl.mag_h.y - measured_ltp.y * ahrs_impl.mag_h.x)/(1<<5)};
 
   struct Int32Vect3 residual_imu;
   INT32_RMAT_VMULT(residual_imu, ahrs.ltp_to_imu_rmat, residual_ltp);

@@ -1,5 +1,5 @@
 # ignore html dir for github pages
-/doc/html
+/doc/generated
 
 *.so
 *.[oa]
@@ -24,6 +24,7 @@
 *.cproject
 *.project
 *.externalToolBuilders
+.settings
 /build.properties
 /META-INF
 
@@ -44,6 +45,7 @@
 /sw/lib/ocaml/ivy/debian/changelog
 /sw/lib/ocaml/ivy/debian/files
 /sw/lib/ocaml/ivy/debian/ivy-ocaml
+/sw/ext
 
 /var
 /dox
@@ -142,6 +144,7 @@
 # /sw/tools/
 /sw/tools/fp_parser.ml
 /sw/tools/wiki_gen/wiki_gen
+/sw/tools/mergelogs
 
 # /sw/ground_segment/misc
 /sw/ground_segment/misc/davis2ivy
