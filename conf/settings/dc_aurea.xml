@@ -17,7 +17,7 @@
        <strip_button name="Stop Autoshoot" icon="off.png" value="0"  group="Aureaimaging" />
       </dl_setting>
 
-      <dl_setting max="255" min="1" step="1" var="dc_autoshoot_quartersec_period" handler="Periodic4Hz" shortname="Periodic" param="DC_AUTOSHOOT_QUARTERSEC_PERIOD" unit="quarter-sec"/>
+      <dl_setting max="255" min="1" step="1" var="dc_autoshoot_quartersec_period" shortname="Periodic" param="DC_AUTOSHOOT_QUARTERSEC_PERIOD" unit="quarter-sec"/>
       <dl_setting max="100" min="1" step="1" var="dc_autoshoot_meter_grid" shortname="PeriodicMeter" param="DC_AUTOSHOOT_METER_GRID" unit="meter"/>
 
     </dl_settings>
