@@ -234,7 +234,7 @@
     <subsystem name="control"/>
     <!-- Sensors -->
     <subsystem name="navigation" type="extra"/>
-    <subsystem name="ins" type="xsens">
+    <subsystem name="ins" type="xsens2">
       <configure name="XSENS_UART_NR" value="0"/>
     </subsystem>
 

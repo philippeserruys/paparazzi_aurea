@@ -73,6 +73,8 @@
     <field name="period" format="U2"/>
   </message>
 
+  <message name="SetOutputConfiguration" ID="0xC0" to="MT"/>
+
   <message name="SetPeriod" ID="0x04" to="MT" length="2">
     <field name="period" format="U2"/>
   </message>
@@ -100,6 +102,10 @@
 
   <message name="ReqData" ID="0x34" to="MT"/>
   <message name="MTData" ID="0x32" to="host">
+    <field name="data" format="V"/>
+  </message>
+
+  <message name="MTData2" ID="0x36" to="host">
     <field name="data" format="V"/>
   </message>
 
